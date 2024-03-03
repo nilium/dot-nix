@@ -1,0 +1,13 @@
+name: afmt
+version: 0.1.0
+
+authors:
+  - Noel <ncower@nil.dev>
+
+targets:
+  afmt:
+    main: src/afmt.cr
+
+crystal: 1.9.2
+
+license: 0BSD
