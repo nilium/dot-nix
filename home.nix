@@ -4,7 +4,6 @@
   ...
 }: let
   isDarwin = pkgs.stdenv.isDarwin;
-  terminal_font = "Pragmata Pro Mono Liga";
   unstable = pkgs.unstable;
 in {
   nixpkgs.config.allowUnfreePredicate = pkg:
@@ -98,29 +97,6 @@ in {
     pkgs.nil
     ncower.sql
 
-    (pkgs.writeShellApplication {
-      name = "hlwm-use";
-      runtimeInputs = [pkgs.herbstluftwm];
-      text = ''
-        num_monitors="$(herbstclient attr monitors.count)"
-        focus_monitor_idx="$(herbstclient attr monitors.focus.index)"
-        locked_monitors=()
-
-        herbstclient lock
-        for ((i=0; i < "$num_monitors"; i++)); do
-          if [[ "$i" != "$focus_monitor_idx" ]]; then
-            locked_monitors+=("$i")
-            herbstclient lock_tag "$i"
-          fi
-        done
-        herbstclient "$@"
-        for i in "''${locked_monitors[@]}"; do
-          herbstclient unlock_tag "$i"
-        done
-        herbstclient unlock
-      '';
-    })
-
     (pkgs.writeScriptBin "batteries" ''
       #!${pkgs.fish}/bin/fish
       set upower ${pkgs.upower}/bin/upower
@@ -160,9 +136,7 @@ in {
   };
 
   programs.pbcopy.enable = !isDarwin;
-
   programs.afmt.enable = true;
-
   programs.pact.enable = true;
 
   programs.ncrandr = {
@@ -198,135 +172,11 @@ in {
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-  programs.fish = {
-    enable = true;
-
-    # Custom plugins.
-    cz-fg.enable = true;
-    ep.enable = true;
-
-    functions.fish_greeting = "";
-    interactiveShellInit = ''
-      fish_add_path -p --move "$(${pkgs.ruby}/bin/gem environment user_gemdir)/bin"
-      fish_add_path -p --move "$HOME/.cargo/bin"
-      fish_add_path -p --move "$HOME/bin"
-
-      set -g -x EDITOR hx
-    '';
-  };
 
   programs.ssh = {
     enable = true;
     forwardAgent = false;
     extraOptionOverrides.CanonicalizeHostname = "yes";
     includes = ["config-local"];
-  };
-
-  # Keep kitty and alacritty configured. If one doesn't work, the other probably also doesn't work
-  # (fun act: the Intel video driver on the Framework is for some reason a problem for these,
-  # so xterm is also important [or just do stuff in a tty]).
-  programs.kitty = {
-    enable = true;
-
-    theme = "duckbones";
-    font = {
-      name = terminal_font;
-      size = 10;
-    };
-
-    shellIntegration.enableFishIntegration = true;
-
-    keybindings = {
-      "ctrl+alt+r" = "load_config_file";
-      "alt+6" = "set_font_size 10";
-      "alt+7" = "set_font_size 11";
-      "alt+8" = "set_font_size 13";
-      "alt+9" = "set_font_size 16";
-      "alt+0" = "set_font_size 20";
-      "ctrl+;" = "send_text all \\x1b;";
-      "ctrl+shift+v" = "paste_from_clipboard";
-      "ctrl+shift+c" = "copy_to_clipboard";
-    };
-
-    extraConfig = ''
-      enable_audio_bell no
-      bell_on_tab no
-      disable_ligatures always
-    '';
-  };
-
-  programs.alacritty = {
-    enable = true;
-    settings = {
-      live_config_reload = true;
-      dynamic_title = true;
-      scrolling.history = 10000;
-      font = let
-        fontdef = merge: {family = terminal_font;} // merge;
-      in {
-        normal = fontdef {};
-        bold = fontdef {};
-        italic = fontdef {};
-        size = 7;
-      };
-
-      # Colors (Blood Moon)
-      colors = {
-        # Default colors
-        primary = {
-          background = "0x10100E";
-          foreground = "0xC6C6C4";
-        };
-
-        # Normal colors
-        normal = {
-          black = "0x10100E";
-          red = "0xC40233";
-          green = "0x009F6B";
-          yellow = "0xFFD700";
-          blue = "0x0087BD";
-          magenta = "0x9A4EAE";
-          cyan = "0x20B2AA";
-          white = "0xC6C6C4";
-        };
-
-        # Bright colors
-        bright = {
-          black = "0x696969";
-          red = "0xFF2400";
-          green = "0x03C03C";
-          yellow = "0xFDFF00";
-          blue = "0x007FFF";
-          magenta = "0xFF1493";
-          cyan = "0x00CCCC";
-          white = "0xFFFAFA";
-        };
-      };
-    };
-  };
-
-  services.pueue = {
-    enable = true;
-    settings = {
-      shared = {
-        pueue_directory = "~/.local/share/pueue";
-        use_unix_socket = true;
-      };
-
-      daemon = {
-        groups.default = 4;
-      };
-    };
-  };
-
-  services.parcellite = {
-    enable = true;
-    package = pkgs.clipit;
-    extraOptions = ["--no-icon"];
-  };
-
-  xsession = {
-    enable = true;
-    windowManager.command = "${pkgs.herbstluftwm}/bin/herbstluftwm";
   };
 }

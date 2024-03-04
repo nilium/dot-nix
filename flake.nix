@@ -63,9 +63,12 @@
       overlays = [
         (final: prev: {
           inherit unstable;
+          inherit (overlayFlake pact) pact;
+
           ncower =
             (prev.ncower or {})
             // overlayFlakes [
+              ncrandr
               sql
             ];
         })
@@ -88,9 +91,13 @@
           ];
         }
         ./git-tools/git-tools.nix
+        ./home/kitty.nix
         ./home/git.nix
         ./home/scr.nix
         ./home/tmux.nix
+        ./home/pueue.nix
+        ./home/fish.nix
+        (import ./home/hlwm)
         ./home.nix
       ];
     };
