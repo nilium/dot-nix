@@ -1,0 +1,96 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+
+LogArgs = Struct.new(:shortlog, :log, :title)
+
+LogAuthor    = LogArgs[[], '--author', 'AUTHOR']
+LogCommitter = LogArgs[%w[-c], '--committer', 'COMMITTER']
+
+log_args = LogCommitter
+hash_names = false
+hash_salt = ''
+
+args = [*ARGV]
+OptionParser.new do |opts|
+  opts.banner = "Usage: git-w2 [options] [git-log args...]"
+  opts.on('-s', '--[no-]sha', 'Hash committer names') do |v|
+    hash_names = v
+  end
+  opts.on('-Ssalt', '--salt=salt', 'Add salt to hash.') do |v|
+    hash_salt = v
+  end
+  opts.on('-a', '--author', 'Use author names.') do
+    log_args = LogAuthor
+  end
+  opts.on('-c', '--committer', 'Use committer names.') do
+    log_args = LogCommitter
+  end
+  opts.on('-h', '--help', 'Print this usage text.') do
+    puts opts
+    exit 2
+  end
+end.parse! args
+
+additional_args = args
+additional_args = %w[HEAD] if additional_args.empty?
+
+require 'digest' if hash_names
+
+authors = IO.popen(%W[git shortlog -s] + log_args.shortlog + additional_args) do |io|
+  io.read.split($/).map do |line|
+    count, author = line.strip.split(/\s+/, 2)
+    [author, count.to_i]
+  end.to_h
+end
+
+Record = Struct.new(:commits, :lines, :words, :bytes)
+
+authors.each do |name, commits|
+  IO.pipe do |r, w|
+    logs = IO.popen(%W[git log #{log_args.log}=#{name} --format=format:%s\n\n%b\n --no-merges] + additional_args, mode: 'rb') { |io| io.read }
+    wc = IO.popen(%w[wc], mode: 'rb+') do |io|
+      io.write(logs)
+      io.close_write
+      io.read.strip.split(/\s+/).map(&:to_i)
+    end
+    authors[name] = Record[commits, *wc]
+  end
+end
+
+lengths = [0, 0, 0, 0, 0, 0, 0]
+
+
+rows = authors.to_a.sort_by { |k, v| v.words }.map do |name, r|
+  avg = Record[
+    r.commits,
+    r.lines.to_f / r.commits,
+    r.words.to_f / r.commits,
+    0,
+  ]
+  if hash_names
+    name = Digest::SHA1.hexdigest("#{hash_salt}#{name}")
+  end
+  columns = [
+    name,
+    r.commits.to_s,
+    "#{avg.lines.round(2)}", "#{r.lines}",
+    "#{avg.words.round(2)}", "#{r.words}",
+    "#{r.bytes}",
+  ].tap do |c|
+    lengths = lengths.zip(c.map(&:length)).map(&:max)
+  end
+end
+
+header = %W[#{log_args.title} COMMITS LPC LINES WPC WORDS BYTES]
+rows = [header] + rows
+lengths = lengths.zip(header.map(&:length)).map(&:max)
+
+rows.each do |row|
+  puts(
+    row.map.each_with_index do |c, i|
+      len = lengths[i]
+      (i == 0) ? c.ljust(len, ' ') : c.rjust(len, ' ')
+    end.join(" | ")
+  )
+end

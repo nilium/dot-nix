@@ -79,6 +79,7 @@
             ./fish/default.nix
           ];
         }
+        ./git-tools/git-tools.nix
         ./home/git.nix
         ./home/scr.nix
         ./home/tmux.nix
