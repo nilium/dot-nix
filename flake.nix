@@ -96,6 +96,7 @@
         ./home/scr.nix
         ./home/tmux.nix
         ./home/pueue.nix
+        ./home/nushell.nix
         ./home/fish.nix
         (import ./home/hlwm)
         ./home.nix
