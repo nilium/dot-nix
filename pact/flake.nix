@@ -13,10 +13,13 @@
     ...
   }:
     {
-      modules = [
-        ({pkgs, ...}: {
-        })
-      ];
+      homeManagerModules.pact = {pkgs, ...}: {
+        imports = [
+          (import ./module.nix {
+            inherit (self.packages.${pkgs.system}) pact;
+          })
+        ];
+      };
     }
     // flake-utils.lib.eachDefaultSystem (
       system: let

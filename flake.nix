@@ -5,7 +5,7 @@
     # This currently points to 23.11 to line up with my previous non-flake configuration.
     # Might later switch to unstable completely.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
     home-manager = {
@@ -25,6 +25,12 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
+    pact = {
+      url = "path:./pact";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
     sql = {
       url = "sourcehut:~nilium/sql";
       # Required for Go 1.22, which isn't available in 23.11 yet.
@@ -38,6 +44,7 @@
     nixpkgs-unstable,
     ncrandr,
     afmt,
+    pact,
     sql,
     home-manager,
     ...
@@ -73,6 +80,7 @@
       modules = [
         afmt.homeManagerModules.afmt
         ncrandr.homeManagerModules.ncrandr
+        pact.homeManagerModules.pact
         {
           imports = [
             ./modules/pbcopy.nix

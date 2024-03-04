@@ -163,6 +163,8 @@ in {
 
   programs.afmt.enable = true;
 
+  programs.pact.enable = true;
+
   programs.ncrandr = {
     enable = true;
     configs = let

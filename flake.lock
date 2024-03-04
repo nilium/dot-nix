@@ -111,6 +111,26 @@
         "type": "github"
       }
     },
+    "pact": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-jW0/pRKmvcfUiK+nzq8XJ8gFjCQxBAVGtNcUkiKhk8U=",
+        "path": "./pact",
+        "type": "path"
+      },
+      "original": {
+        "path": "./pact",
+        "type": "path"
+      }
+    },
     "root": {
       "inputs": {
         "afmt": "afmt",
@@ -119,6 +139,7 @@
         "ncrandr": "ncrandr",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "pact": "pact",
         "sql": "sql"
       }
     },
