@@ -1,8 +1,7 @@
-{pkgs, ...}: let
+{ncrandr, ...}: {pkgs, ...}: let
   inherit (pkgs) lib stdenv;
 
   inherit (pkgs) herbstluftwm pact gawk coreutils hsetroot xorg;
-  ncrandr = pkgs.ncower.ncrandr;
   inherit (xorg) xmodmap xset;
 
   autostart = stdenv.mkDerivation {

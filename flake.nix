@@ -6,7 +6,13 @@
     # Might later switch to unstable completely.
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    systems.url = "github:nix-systems/default";
+
     flake-utils.url = "github:numtide/flake-utils";
+    flake-utils.inputs.systems.follows = "systems";
+
+    crane.url = "github:ipetkov/crane";
+    crane.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
@@ -37,42 +43,62 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
       inputs.flake-utils.follows = "flake-utils";
     };
+
+    helix = {
+      url = "github:nilium/helix/nil-23.10";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.flake-utils.follows = "flake-utils";
+      inputs.crane.follows = "crane";
+    };
+
+    typst = {
+      url = "github:typst/typst";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.systems.follows = "systems";
+      inputs.crane.follows = "crane";
+    };
   };
 
   outputs = {
     nixpkgs,
     nixpkgs-unstable,
+    home-manager,
     ncrandr,
     afmt,
     pact,
     sql,
-    home-manager,
+    helix,
+    typst,
     ...
   }: let
     system = "x86_64-linux";
 
-    overlayFlake = flake: removeAttrs flake.packages.${system} ["default"];
+    flakePackages = flake: flake.packages.${system};
+    overlayFlake = flake: removeAttrs (flakePackages flake) ["default"];
     overlayFlakes = flakes:
       builtins.foldl' (acc: flake: acc // overlayFlake flake) {}
       flakes;
 
-    unstable = nixpkgs-unstable.legacyPackages.${system};
+    overlay-unstable = final: prev: {
+      inherit (flakePackages helix) helix;
+      typst = (flakePackages typst).default;
+
+      ncower = (prev.ncower or {}) // overlayFlakes [sql];
+    };
+
+    unstable = import nixpkgs-unstable {
+      inherit system;
+      overlays = [overlay-unstable];
+    };
+
+    overlay-stable = final: prev: {
+      inherit unstable;
+      inherit (overlayFlake pact) pact;
+    };
 
     pkgs = import nixpkgs {
       inherit system;
-      overlays = [
-        (final: prev: {
-          inherit unstable;
-          inherit (overlayFlake pact) pact;
-
-          ncower =
-            (prev.ncower or {})
-            // overlayFlakes [
-              ncrandr
-              sql
-            ];
-        })
-      ];
+      overlays = [overlay-stable];
     };
   in {
     homeConfigurations."ncower" = home-manager.lib.homeManagerConfiguration {
@@ -98,7 +124,7 @@
         ./home/pueue.nix
         ./home/nushell.nix
         ./home/fish.nix
-        (import ./home/hlwm)
+        (import ./home/hlwm (overlayFlakes [ncrandr]))
         ./home.nix
       ];
     };

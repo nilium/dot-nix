@@ -36,7 +36,7 @@ in {
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = let
-    inherit (pkgs) ncower;
+    inherit (unstable) ncower;
   in [
     pkgs.alejandra
     pkgs.blueman
@@ -51,6 +51,7 @@ in {
     pkgs.fzf
     pkgs.gnumake
     pkgs.gnused
+    unstable.helix
     pkgs.hsetroot
     pkgs.htop
     pkgs.killall
@@ -66,6 +67,7 @@ in {
     pkgs.xsel
     pkgs.xss-lock
     pkgs.ruby
+
     unstable.mise
 
     # Fonts
@@ -80,6 +82,7 @@ in {
     unstable.crystal
     unstable.go_1_22
     pkgs.rustup
+    unstable.typst
 
     # Customized
     (pkgs.polybar.override {
