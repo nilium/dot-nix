@@ -68,8 +68,6 @@ in {
     pkgs.xss-lock
     pkgs.ruby
 
-    unstable.mise
-
     # Fonts
     pkgs.alegreya
     pkgs.comic-mono

@@ -7,9 +7,6 @@ cd "$HOME/.config/herbstluftwm"
 
 export PATH="$HOME/bin:$PATH"
 
-set -x
-exec 2>$HOME/hl.log
-
 # Background and foreground colors (affects polybar)
 BG_COLOR='#090909'
 FG_COLOR='#c0c0c0'
@@ -257,8 +254,8 @@ if have_bin polybar; then
     export POLYBAR_FG="$FG_COLOR"
     for m in $(polybar -m | cut -d: -f1); do
         (
-        [[ -r ./conf ]] && . ./conf
         cd "$HOME/.config/polybar"
+        [[ -r ./conf ]] && . ./conf
         in_session env POLYBAR_MONITOR="$m" polybar -c "${POLYBAR_CONFIG:-config.ini}" "${POLYBAR_BAR:-main}" &
         )
     done

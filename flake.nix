@@ -122,6 +122,7 @@
         ./home/scr.nix
         ./home/tmux.nix
         ./home/pueue.nix
+        (import ./home/helix {inherit (overlayFlakes [helix]) helix;})
         ./home/nushell.nix
         ./home/fish.nix
         (import ./home/hlwm (overlayFlakes [ncrandr]))

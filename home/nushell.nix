@@ -1,7 +1,8 @@
 {pkgs, ...}: {
   programs.nushell = {
     enable = true;
-    configFile.text = "";
+    configFile.text = ''
+    '';
     envFile.text = ''
       $env.PATH = ($env.PATH |
         split row (char esep) |
