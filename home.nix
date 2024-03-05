@@ -173,11 +173,4 @@ in {
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-
-  programs.ssh = {
-    enable = true;
-    forwardAgent = false;
-    extraOptionOverrides.CanonicalizeHostname = "yes";
-    includes = ["config-local"];
-  };
 }

@@ -125,6 +125,7 @@
         (import ./home/helix {inherit (overlayFlakes [helix]) helix;})
         ./home/nushell.nix
         ./home/fish.nix
+        ./home/ssh.nix
         (import ./home/hlwm (overlayFlakes [ncrandr]))
         ./home.nix
       ];
