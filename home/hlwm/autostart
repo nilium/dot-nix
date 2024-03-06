@@ -247,16 +247,24 @@ e831af42b8182ca8702f0dc945b89b38)
     ;;
 esac
 
+first() {
+        local filter="$1"
+        shift
+        printf '%s\n' "$@" | grep -Pe "$filter" | head -n1
+}
+
 # Start per-monitor polybar instances.
 if have_bin polybar; then
     (
     export POLYBAR_BG="$BG_COLOR"
     export POLYBAR_FG="$FG_COLOR"
-    for m in $(polybar -m | cut -d: -f1); do
+    ifaces=($(ip link ls | grep -Ee '^[1-9]' | cut -d' ' -f2 | cut -d':' -f1))
+    export POLYBAR_WLAN_IFACE="$(first '^wlp' "${ifaces[@]}")"
+    export POLYBAR_LAN_IFACE="$(first '^enp' "${ifaces[@]}")"
+    for m in $(polybar -m | cut -d: -f1 | sort); do
         (
-        cd "$HOME/.config/polybar"
-        [[ -r ./conf ]] && . ./conf
-        in_session env POLYBAR_MONITOR="$m" polybar -c "${POLYBAR_CONFIG:-config.ini}" "${POLYBAR_BAR:-main}" &
+        export POLYBAR_MONITOR="$m"
+        in_session polybar -c "$HOME/.config/herbstluftwm/polybar.ini" main &
         )
     done
     )

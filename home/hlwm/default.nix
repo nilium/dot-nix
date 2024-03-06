@@ -1,8 +1,14 @@
 {ncrandr, ...}: {pkgs, ...}: let
   inherit (pkgs) lib stdenv;
 
-  inherit (pkgs) herbstluftwm pact gawk coreutils hsetroot xorg;
+  inherit (pkgs) herbstluftwm pact gnugrep gawk coreutils hsetroot xorg;
   inherit (xorg) xmodmap xset;
+
+  polybar = pkgs.polybar.override {
+    alsaSupport = true;
+    mpdSupport = true;
+    pulseSupport = true;
+  };
 
   autostart = stdenv.mkDerivation {
     name = "hlwm-autostart";
@@ -14,7 +20,7 @@
       install $src "$out/bin/autostart"
       wrapProgram "$out/bin/autostart" \
         --prefix PATH : ${lib.makeBinPath [ncrandr pact hsetroot xmodmap xset]} \
-        --suffix PATH : ${lib.makeBinPath [herbstluftwm gawk coreutils]}
+        --suffix PATH : ${lib.makeBinPath [polybar herbstluftwm gawk gnugrep coreutils]}
     '';
 
     nativeBuildInputs = [pkgs.makeWrapper];
@@ -42,6 +48,8 @@
       herbstclient unlock
     '';
   };
+
+  polybar-config = pkgs.callPackage ./polybar.nix {};
 in {
   home.packages = [
     hlwm-use
@@ -55,4 +63,6 @@ in {
   xdg.configFile."herbstluftwm/autostart".source = pkgs.writeShellScript "herbstluftwm-autostart" ''
     exec ${autostart}/bin/autostart
   '';
+
+  xdg.configFile."herbstluftwm/polybar.ini".source = polybar-config;
 }
