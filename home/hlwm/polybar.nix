@@ -118,33 +118,42 @@
       margin-top = 0;
     };
 
-    bar.main = {
-      monitor = "\${env:POLYBAR_MONITOR:eDP-1}";
-      monitor-strict = true;
-      monitor-exact = true;
+    bar = let
+      common = {
+        monitor = "\${env:POLYBAR_MONITOR:eDP-1}";
+        monitor-strict = true;
+        monitor-exact = true;
 
-      font-0 = "\${env:POLYBAR_NORMAL_FONT:Ubuntu Condensed:size=12;3}";
-      font-1 = "\${env:POLYBAR_FIXED_FONT:PragmataPro:size=14;4}";
+        font-0 = "\${env:POLYBAR_NORMAL_FONT:Ubuntu Condensed:size=12;3}";
+        font-1 = "\${env:POLYBAR_FIXED_FONT:PragmataPro:size=14;4}";
 
-      override-redirect = false;
-      bottom = true;
-      fixed-center = true;
-      width = "100%";
-      height = 50;
-      background = color.bg;
-      radius = 0.0;
-      overline-size = 4;
-      underline-size = 0;
-      border-bottom-size = 0;
-      border-color = color.ac;
-      padding = 2;
-      module-margin-left = 2;
-      module-margin-right = 2;
-      modules-left = "workspaces";
-      modules-center = "date battery";
-      modules-right = "pulseaudio wlan lan tray";
-      dim-value = 0.5;
-      enable-ipc = true;
+        override-redirect = false;
+        bottom = true;
+        fixed-center = true;
+        width = "100%";
+        height = 50;
+        background = color.bg;
+        radius = 0.0;
+        overline-size = 4;
+        underline-size = 0;
+        border-bottom-size = 0;
+        border-color = color.ac;
+        padding = 2;
+        module-margin-left = 2;
+        module-margin-right = 2;
+        modules-left = "workspaces";
+        modules-center = "date battery";
+        modules-right = "pulseaudio wlan lan";
+        dim-value = 0.5;
+        enable-ipc = true;
+      };
+    in {
+      primary =
+        common
+        // {
+          modules-right = "pulseaudio wlan lan tray";
+        };
+      secondary = common;
     };
 
     module.date = {

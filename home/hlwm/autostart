@@ -261,10 +261,16 @@ if have_bin polybar; then
     ifaces=($(ip link ls | grep -Ee '^[1-9]' | cut -d' ' -f2 | cut -d':' -f1))
     export POLYBAR_WLAN_IFACE="$(first '^wlp' "${ifaces[@]}")"
     export POLYBAR_LAN_IFACE="$(first '^enp' "${ifaces[@]}")"
-    for m in $(polybar -m | cut -d: -f1 | sort); do
+    primary_monitor="$(polybar -m | grep -e primary | cut -d: -f1 | sort | head -n1)"
+    for m in $(polybar -m | cut -d: -f1); do
         (
+        bar=secondary
         export POLYBAR_MONITOR="$m"
-        in_session polybar -c "$HOME/.config/herbstluftwm/polybar.ini" main &
+        if [[ $m == $primary_monitor ]]; then
+            export POLYBAR_TRAY=tray
+            bar=primary
+        fi
+        in_session polybar -c "$HOME/.config/herbstluftwm/polybar.ini" $bar &
         )
     done
     )
