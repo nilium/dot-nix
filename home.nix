@@ -46,14 +46,16 @@ in {
     pkgs.ectool
     pkgs.entr
     pkgs.fd
-    pkgs.firefox
     pkgs.framework-tool
     pkgs.fzf
+    pkgs.git
     pkgs.gnumake
     pkgs.gnused
     unstable.helix
     pkgs.hsetroot
     pkgs.htop
+    unstable.jq
+    unstable.just
     pkgs.killall
     pkgs.lld
     pkgs.maim
@@ -64,10 +66,12 @@ in {
     pkgs.rofi
     pkgs.socat
     pkgs.tokei
+    pkgs.tree
     pkgs.unzip
     pkgs.xsel
     pkgs.xss-lock
     pkgs.ruby
+    pkgs.wget
 
     # Fonts
     pkgs.alegreya
@@ -137,6 +141,7 @@ in {
     # EDITOR = "emacs";
   };
 
+  programs.firefox.enable = true;
   programs.pbcopy.enable = !isDarwin;
   programs.afmt.enable = true;
   programs.pact.enable = true;

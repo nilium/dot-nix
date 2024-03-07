@@ -59,9 +59,10 @@
     };
   };
 
-  outputs = {
+  outputs = inputs @ {
     nixpkgs,
     nixpkgs-unstable,
+    flake-utils,
     home-manager,
     ncrandr,
     afmt,
@@ -71,64 +72,37 @@
     typst,
     ...
   }: let
-    system = "x86_64-linux";
+    flakePackages' = system: flake: flake.packages.${system};
 
-    flakePackages = flake: flake.packages.${system};
-    overlayFlake = flake: removeAttrs (flakePackages flake) ["default"];
-    overlayFlakes = flakes:
-      builtins.foldl' (acc: flake: acc // overlayFlake flake) {}
+    overlayFlake' = system: flake: removeAttrs (flakePackages' system flake) ["default"];
+    overlayFlakes' = system: flakes:
+      builtins.foldl' (acc: flake: acc // (overlayFlake' system flake)) {}
       flakes;
 
-    overlay-unstable = final: prev: {
-      inherit (flakePackages helix) helix;
-      typst = (flakePackages typst).default;
-
-      ncower = (prev.ncower or {}) // overlayFlakes [sql];
+    lib' = system: {
+      flakePackages = flakePackages' system;
+      overlayFlake = overlayFlake' system;
+      overlayFlakes = overlayFlakes' system;
     };
 
-    unstable = import nixpkgs-unstable {
-      inherit system;
-      overlays = [overlay-unstable];
-    };
-
-    overlay-stable = final: prev: {
-      inherit unstable;
-      inherit (overlayFlake pact) pact;
-    };
-
-    pkgs = import nixpkgs {
-      inherit system;
-      overlays = [overlay-stable];
-    };
-  in {
-    homeConfigurations."ncower" = home-manager.lib.homeManagerConfiguration {
-      inherit pkgs;
-
-      # Specify your home configuration modules here, for example,
-      # the path to your home.nix.
-      modules = [
-        afmt.homeManagerModules.afmt
-        ncrandr.homeManagerModules.ncrandr
-        pact.homeManagerModules.pact
-        {
-          imports = [
-            ./modules/pbcopy.nix
-            ./fish/default.nix
+    forSystem = system: apply:
+      apply {
+        inherit system;
+        lib = lib' system;
+      };
+  in
+    (flake-utils.lib.eachDefaultSystem (
+      system: let
+        pkgs = nixpkgs-unstable.legacyPackages.${system};
+      in {
+        devShells.default = pkgs.mkShell {
+          buildInputs = [
+            pkgs.alejandra
+            pkgs.just
+            afmt.packages.${system}.default
           ];
-        }
-        ./git-tools/git-tools.nix
-        ./home/kitty.nix
-        ./home/git.nix
-        ./home/scr.nix
-        ./home/tmux.nix
-        ./home/pueue.nix
-        (import ./home/helix {inherit (overlayFlakes [helix]) helix;})
-        ./home/nushell.nix
-        ./home/fish.nix
-        ./home/ssh.nix
-        (import ./home/hlwm (overlayFlakes [ncrandr]))
-        ./home.nix
-      ];
-    };
-  };
+        };
+      }
+    ))
+    // (forSystem "x86_64-linux" (import ./sirin inputs));
 }
