@@ -47,18 +47,21 @@ in {
         value,
       }: let
         hasElse = hasAttr "else" value;
-        autoElse = ifEnable hasElse ["--output" "__else__" "--off"];
+        autoElse = ifEnable (!hasElse) ["--output" "__else__" "--off"];
         outputName = output:
           if output == "else"
           then "__else__"
           else output;
 
-        outputs = map ({
-          name,
-          value,
-        }:
-          ["--output" (outputName name)] ++ value ++ autoElse)
-        (attrsToList value.outputs);
+        outputs =
+          (builtins.foldl' (acc: {
+              name,
+              value,
+            }:
+              acc ++ ["--output" (outputName name)] ++ value)
+            []
+            (attrsToList value.outputs))
+          ++ autoElse;
       in
         writeShellApplication {
           inherit name;

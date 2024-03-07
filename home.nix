@@ -160,7 +160,7 @@ in {
 
       externals = {
         "QpOzw43/FtKcAue8crHd8nD6mv23SIHng0KNfFOadow=" = ["--primary" "--rate" "120.0" "--mode" "2560x1440" "--pos" "1440x639" "--rotate" "normal"];
-        "VWKMrBqP82yw4QqfuSglEdud4YYFpo+sqjyHRShnlys=" = ["--rate" "59.95" "--mode" "2560x1440" "--pos" "0x0" "--rotate" "left"];
+        "VWKMrBqP82yw4QqfuSglEdud4YYFpo+sqjyHRShnlys=" = ["--rate" "120.0" "--mode" "2560x1440" "--pos" "0x0" "--rotate" "left"];
       };
 
       with-laptop = externals // laptop ["--pos" "1592x1879"];
