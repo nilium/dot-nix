@@ -31,6 +31,12 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
+    fex = {
+      url = "sourcehut:~nilium/go-fex";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
     pact = {
       url = "path:./pact";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -69,6 +75,7 @@
     pact,
     sql,
     helix,
+    fex,
     typst,
     ...
   }: let

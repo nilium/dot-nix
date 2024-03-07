@@ -40,6 +40,29 @@
         "type": "github"
       }
     },
+    "fex": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1709805980,
+        "narHash": "sha256-+SrfaDAmoOexzPwCRyZa8tNiPtCtXy3OopwgtwFzV+k=",
+        "owner": "~nilium",
+        "repo": "go-fex",
+        "rev": "4a3c50816a8e1e4e1751f0743819b7693e39b6bf",
+        "type": "sourcehut"
+      },
+      "original": {
+        "owner": "~nilium",
+        "repo": "go-fex",
+        "type": "sourcehut"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -220,6 +243,7 @@
       "inputs": {
         "afmt": "afmt",
         "crane": "crane",
+        "fex": "fex",
         "flake-utils": "flake-utils",
         "helix": "helix",
         "home-manager": "home-manager",

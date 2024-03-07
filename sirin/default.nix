@@ -5,6 +5,7 @@
   home-manager,
   ncrandr,
   afmt,
+  fex,
   pact,
   sql,
   helix,
@@ -57,6 +58,9 @@ in {
       afmt.homeManagerModules.afmt
       ncrandr.homeManagerModules.ncrandr
       pact.homeManagerModules.pact
+      {
+        home.packages = [(flakePackages fex).fex];
+      }
       {
         imports = [
           ../modules/pbcopy.nix
