@@ -58,6 +58,7 @@ in {
     pkgs.lld
     pkgs.maim
     pkgs.miller
+    pkgs.networkmanagerapplet
     pkgs.pavucontrol
     pkgs.ripgrep
     pkgs.rofi

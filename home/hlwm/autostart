@@ -276,6 +276,10 @@ if have_bin polybar; then
     )
 fi
 
+if have_bin nm-applet; then
+    in_session nm-applet &
+fi
+
 if have_bin blueman-applet; then
     in_session blueman-applet &
 fi
