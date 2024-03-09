@@ -1,5 +1,6 @@
 {
   stdenv,
+  writeTextFile,
   lib,
   coreutils,
   gnused,
@@ -8,6 +9,15 @@
   parallel,
 }: let
   name = "fish-ep";
+  epConfig = writeTextFile {
+    name = "ep-paths";
+    text = ''
+      set -g EP_FZF ${fzf}/bin/fzf
+      set -g EP_FD ${fd}/bin/fd
+      set -g EP_PARALLEL ${parallel}/bin/parallel
+      set -g EP_SED ${gnused}/bin/sed
+    '';
+  };
 in
   stdenv.mkDerivation {
     inherit name;
@@ -27,5 +37,6 @@ in
       destdir="$out/share/$name"
       mkdir -p "$destdir"
       cp -r conf.d functions "$destdir/"
+      ln -s ${epConfig} "$destdir/conf.d/ep-path.fish"
     '';
   }

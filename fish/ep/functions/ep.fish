@@ -1,4 +1,20 @@
 function ep
+    if test -z $EP_PARALLEL
+        set EP_PARALLEL parallel
+    end
+
+    if test -z $EP_FD
+        set EP_FD fd
+    end
+
+    if test -z $EP_FZF
+        set EP_FZF fzf
+    end
+
+    if test -z $EP_SED
+        set EP_SED sed
+    end
+
     argparse \
         --name=ep        \
         --stop-nonopt    \
@@ -25,11 +41,11 @@ function ep
             set wnd 'up:75%'
         end
 
-        parallel 2>/dev/null \
+        $EP_PARALLEL 2>/dev/null \
             --line-buffer \
             --quote       \
             --max-args 2  \
-                fd \
+                $EP_FD \
                     $EP_FD_ARGS      \
                     --prune          \
                     --hidden         \
@@ -41,9 +57,9 @@ function ep
                     $EP_FD_PATTERN   \
                     {1}              \
                 ::: $EP_PATH |
-            sed -Ee 's#^'{$HOME}'/#~/#;s#/[^/]+/?$##' |
+            $EP_SED -Ee 's#^'{$HOME}'/#~/#;s#/[^/]+/?$##' |
             sort | uniq |
-            fzf \
+            $EP_FZF \
                 --filepath-word                                  \
                 --select-1                                       \
                 --$fzfquery "$argv"
