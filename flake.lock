@@ -11,7 +11,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-3dpOg+o1V99rI3wPDYi9JnlglntGaaU22eBDflNRdiU=",
+        "narHash": "sha256-SfHZ4lUFINh1OaZuJOjjE7rG0/TxhjFJqk3Q6a6Ahxs=",
         "path": "./afmt",
         "type": "path"
       },
