@@ -2,20 +2,22 @@
   description = "Noel's home configuration";
 
   inputs = {
-    # This currently points to 23.11 to line up with my previous non-flake configuration.
-    # Might later switch to unstable completely.
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     systems.url = "github:nix-systems/default";
 
-    flake-utils.url = "github:numtide/flake-utils";
-    flake-utils.inputs.systems.follows = "systems";
+    # TODO: swtich to flake-parts? Not sure it's decidedly better still.
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
 
-    crane.url = "github:ipetkov/crane";
-    crane.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    crane = {
+      url = "github:ipetkov/crane";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.11";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -45,21 +47,20 @@
 
     sql = {
       url = "sourcehut:~nilium/sql";
-      # Required for Go 1.22, which isn't available in 23.11 yet.
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
 
     helix = {
       url = "github:nilium/helix/nil-23.10";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
       inputs.crane.follows = "crane";
     };
 
     typst = {
       url = "github:typst/typst";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.systems.follows = "systems";
       inputs.crane.follows = "crane";
     };
@@ -67,7 +68,6 @@
 
   outputs = inputs @ {
     nixpkgs,
-    nixpkgs-unstable,
     flake-utils,
     home-manager,
     ncrandr,
@@ -100,7 +100,7 @@
   in
     (flake-utils.lib.eachDefaultSystem (
       system: let
-        pkgs = nixpkgs-unstable.legacyPackages.${system};
+        pkgs = nixpkgs.legacyPackages.${system};
       in {
         devShells.default = pkgs.mkShell {
           buildInputs = [

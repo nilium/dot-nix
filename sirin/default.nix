@@ -1,6 +1,5 @@
 {
   nixpkgs,
-  nixpkgs-unstable,
   flake-utils,
   home-manager,
   ncrandr,
@@ -17,26 +16,16 @@
 }: let
   inherit (lib) flakePackages overlayFlakes;
 
-  overlay-unstable = final: prev: {
+  extra-packages = final: prev: {
+    inherit (overlayFlakes [pact]) pact;
     inherit (flakePackages helix) helix;
     typst = (flakePackages typst).default;
-
     ncower = (prev.ncower or {}) // lib.overlayFlakes [sql];
-  };
-
-  overlay-stable = final: prev: {
-    inherit unstable;
-    inherit (overlayFlakes [pact]) pact;
-  };
-
-  unstable = import nixpkgs-unstable {
-    inherit system;
-    overlays = [overlay-unstable];
   };
 
   pkgs = import nixpkgs {
     inherit system;
-    overlays = [overlay-stable];
+    overlays = [extra-packages];
   };
 in {
   nixosConfigurations.sirin = nixpkgs.lib.nixosSystem {

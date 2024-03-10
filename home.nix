@@ -3,16 +3,18 @@
   lib,
   ...
 }: let
+  unfreePackages = [
+    "1password-gui"
+    "1password-cli"
+    "1password"
+    "discord"
+  ];
+
+  allowUnfreePackages = pkg: builtins.elem (lib.getName pkg) unfreePackages;
+
   isDarwin = pkgs.stdenv.isDarwin;
-  unstable = pkgs.unstable;
 in {
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "1password-gui"
-      "1password-cli"
-      "1password"
-      "discord"
-    ];
+  nixpkgs.config.allowUnfreePredicate = allowUnfreePackages;
 
   nix = {
     package = pkgs.nix;
@@ -36,7 +38,7 @@ in {
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = let
-    inherit (unstable) ncower;
+    inherit (pkgs) ncower;
   in [
     pkgs.alejandra
     pkgs.blueman
@@ -51,16 +53,17 @@ in {
     pkgs.git
     pkgs.gnumake
     pkgs.gnused
-    unstable.helix
+    pkgs.helix
     pkgs.hsetroot
     pkgs.htop
-    unstable.jq
-    unstable.just
+    pkgs.jq
+    pkgs.just
     pkgs.killall
     pkgs.lld
     pkgs.maim
     pkgs.miller
     pkgs.networkmanagerapplet
+    pkgs.nil
     pkgs.pavucontrol
     pkgs.ripgrep
     pkgs.rofi
@@ -82,10 +85,10 @@ in {
 
     # Compilers
     pkgs.gcc
-    unstable.crystal
-    unstable.go_1_22
+    pkgs.crystal
+    pkgs.go_1_22
     pkgs.rustup
-    unstable.typst
+    pkgs.typst
 
     # Customized
     (pkgs.polybar.override {
@@ -100,7 +103,6 @@ in {
     pkgs.discord
 
     # Mine
-    pkgs.nil
     ncower.sql
 
     (pkgs.writeScriptBin "batteries" ''
