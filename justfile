@@ -52,3 +52,6 @@ update-stable: (update 'nixpkgs')
 
 # Update unstable nixpkgs.
 update-unstable: (update 'nixpkgs-unstable')
+
+home-manager *args:
+	{{home-manager}} {{args}}
