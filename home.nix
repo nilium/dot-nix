@@ -50,6 +50,7 @@ in {
     pkgs.fd
     pkgs.framework-tool
     pkgs.fzf
+    pkgs.gh
     pkgs.git
     pkgs.gnumake
     pkgs.gnused

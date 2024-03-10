@@ -1,45 +1,37 @@
 {
+  system,
   lib,
   stdenv,
+  writeScriptBin,
+  writeShellApplication,
   symlinkJoin,
   ruby,
   fzf,
-  makeWrapper,
+  jq,
+  xdg-utils,
   ...
 }: let
-  script = src: patch: let
+  script = src: deps: let
     name = baseNameOf src;
+    script = writeScriptBin name (builtins.readFile src);
+    runtimeInputs = [script] ++ deps;
   in
-    stdenv.mkDerivation (let
-      config = {
-        inherit name src;
-        dontUnpack = true;
-        installPhase = ''
-          mkdir -p "$out/bin";
-          install "$src" "$out/bin/$name"
-        '';
-      };
-    in
-      config // (patch config));
-
-  git-w2 = script ./git-w2 (_: {
-    propagatedBuildInputs = [ruby];
-  });
-
-  git-sb = script ./git-sb (prev: {
-    nativeBuildInputs = [makeWrapper];
-    propagatedBuildInputs = [ruby];
-    installPhase =
-      prev.installPhase
-      + ''
-        wrapProgram "$out/bin/$name" --suffix PATH : ${lib.makeBinPath [fzf]}
+    writeShellApplication {
+      inherit name runtimeInputs;
+      text = ''
+        exec ${script} "$@"
       '';
-  });
+    };
+
+  git-w2 = script ./git-w2 [ruby];
+  git-sb = script ./git-sb [ruby fzf];
+  git-mr = script ./git-mr ([jq] ++ lib.ifEnable stdenv.isLinux [xdg-utils]);
 in
   symlinkJoin {
     name = "git-tools";
     paths = [
       git-w2
       git-sb
+      git-mr
     ];
   }

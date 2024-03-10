@@ -79,6 +79,7 @@ in {
           pkgs.entr
           pkgs.fd
           pkgs.fzf
+          pkgs.gh
           pkgs.git
           pkgs.gnumake
           pkgs.gnused
