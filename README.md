@@ -10,6 +10,21 @@ For the most part, this shouldn't require any special environment other than
 and `alejandra` for quick changes when I want to make sure formatting is
 right and to run builds easily.
 
+## Quirks
+
+This is a list of quirks that can come up that I occasionally forget
+about. Mostly error messages that are esoteric and I tend to see only once
+per machine.
+
+### Cannot fetch input `path:...` because it uses a relative path
+
+This is due to flakes with relative inputs not too smart. The gist of this
+is that the subflakes need to be interacted with in some way before the
+top-level flake can be used. For now, the easiest way to do this is to run
+`just update-local`.
+
+Nix might eventually be smarter than this, but it isn't right now.
+
 ### Just Recipes
 
 The following recipes in the `justfile` can be used for convenience. They
@@ -45,13 +60,12 @@ be listed using `just --list`.
 
   * `update {input}` - Update the given flake input.
 
-  * `update-local` - Updates local flake locks (i.e., afmt, ncrandr, pact).
+  * `update-local` - Updates local flake locks (e.g., afmt, ncrandr, pact).
 
-  * `update-packages` - Update both stable and unstable nixpkgs.
+  * `update-packages` - Update both nixpkgs.
 
-  * `update-stable` - Update stable nixpkgs.
-
-  * `update-unstable` - Update unstable nixpkgs.
+  * `home-manager [args]` - Run `home-manager` with the given arguments. Useful
+    on machines where I don't want the `home-manager` program itself installed.
 
 ## License
 

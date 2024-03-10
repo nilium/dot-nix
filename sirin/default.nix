@@ -1,6 +1,6 @@
 {
   nixpkgs,
-  flake-utils,
+  ntk,
   home-manager,
   ncrandr,
   afmt,
@@ -10,17 +10,15 @@
   helix,
   typst,
   ...
-}: {
-  system,
-  lib,
 }: let
-  inherit (lib) flakePackages overlayFlakes;
+  system = "x86_64-linux";
+  inherit (ntk.lib.forSystem system) flakePackages overlayFlakes;
 
   extra-packages = final: prev: {
     inherit (overlayFlakes [pact]) pact;
     inherit (flakePackages helix) helix;
     typst = (flakePackages typst).default;
-    ncower = (prev.ncower or {}) // lib.overlayFlakes [sql];
+    ncower = (prev.ncower or {}) // overlayFlakes [sql];
   };
 
   pkgs = import nixpkgs {
@@ -54,11 +52,14 @@ in {
         imports = [
           ../modules/pbcopy.nix
           ../fish/default.nix
+          ../home/fmt.nix
         ];
       }
       ../git-tools/git-tools.nix
       ../home/kitty.nix
-      ../home/git.nix
+      (import ../home/git.nix {
+        signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGJMs/x7sWSkjVY5tNBHlLOF6puCPljTWbbyUTL6rpnF";
+      })
       ../home/scr.nix
       ../home/tmux.nix
       ../home/pueue.nix

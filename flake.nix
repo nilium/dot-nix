@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     systems.url = "github:nix-systems/default";
+    ntk.url = "path:./ntk";
 
     # TODO: swtich to flake-parts? Not sure it's decidedly better still.
     flake-utils = {
@@ -66,50 +67,10 @@
     };
   };
 
-  outputs = inputs @ {
-    nixpkgs,
-    flake-utils,
-    home-manager,
-    ncrandr,
-    afmt,
-    pact,
-    sql,
-    helix,
-    fex,
-    typst,
-    ...
-  }: let
-    flakePackages' = system: flake: flake.packages.${system};
-
-    overlayFlake' = system: flake: removeAttrs (flakePackages' system flake) ["default"];
-    overlayFlakes' = system: flakes:
-      builtins.foldl' (acc: flake: acc // (overlayFlake' system flake)) {}
-      flakes;
-
-    lib' = system: {
-      flakePackages = flakePackages' system;
-      overlayFlake = overlayFlake' system;
-      overlayFlakes = overlayFlakes' system;
-    };
-
-    forSystem = system: apply:
-      apply {
-        inherit system;
-        lib = lib' system;
-      };
-  in
-    (flake-utils.lib.eachDefaultSystem (
-      system: let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in {
-        devShells.default = pkgs.mkShell {
-          buildInputs = [
-            pkgs.alejandra
-            pkgs.just
-            afmt.packages.${system}.default
-          ];
-        };
-      }
-    ))
-    // (forSystem "x86_64-linux" (import ./sirin inputs));
+  outputs = inputs @ {flake-utils, ...}:
+    flake-utils.lib.meld inputs [
+      ./dot-shell.nix
+      ./sirin
+      ./dolya
+    ];
 }

@@ -1,4 +1,4 @@
-default-host := `hostname`
+default-host := `hostname -s`
 default-user := `id -nu`
 
 _sel := '.#'
@@ -37,21 +37,17 @@ activate-host host=default-host:
 
 # Update a particular flake input.
 update input:
-	nix flake lock --update-input {{quote(input)}}
+	nix flake update {{quote(input)}}
 
 # Update local in-repo flake inputs.
 update-local: (update 'afmt') \
               (update 'ncrandr') \
               (update 'pact') \
+			  (update 'ntk') \
 
-# Update both nixpkgs and nixpkgs-unstable.
-update-packages: update-stable update-unstable
+# Update nixpkgs.
+update-packages: (update 'nixpkgs')
 
-# Update stable nixpkgs. I will probably eventually have to split this along release channels.
-update-stable: (update 'nixpkgs')
-
-# Update unstable nixpkgs.
-update-unstable: (update 'nixpkgs-unstable')
-
+# Run home-manager with the given arguments.
 home-manager *args:
 	{{home-manager}} {{args}}

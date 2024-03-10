@@ -1,7 +1,7 @@
-{
+options @ {signingKey, ...}: {
   programs.git = {
     enable = true;
-    userEmail = "ncower@nil.dev";
+    userEmail = options.email or "ncower@nil.dev";
     userName = "Noel";
     difftastic.enable = true;
 
@@ -37,7 +37,7 @@
       };
 
       # SSH signing config.
-      user.signingkey = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGJMs/x7sWSkjVY5tNBHlLOF6puCPljTWbbyUTL6rpnF"];
+      user.signingkey = [signingKey];
       gpg = {
         format = ["ssh"];
         ssh.allowedSignersFile = ["~/.ssh/authorized_signers"];

@@ -114,11 +114,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1702254969,
-        "narHash": "sha256-LSQ0K4Bi2JkZu8tRPfuqepVRkC7SU3i8nKkPXfM6zDs=",
+        "lastModified": 1710060335,
+        "narHash": "sha256-wW9aObKRE9Cbzl1DWaXySp6ytXY074AMlpi2a1Nz/UA=",
         "owner": "nilium",
         "repo": "helix",
-        "rev": "ca4522ca4709ff1141dc6a47b03b537ef5c9c155",
+        "rev": "cd41388eeb53f85e7164f257c4d552a03074816c",
         "type": "github"
       },
       "original": {
@@ -203,6 +203,18 @@
         "type": "github"
       }
     },
+    "ntk": {
+      "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-GvJu1DrirKTeBj22+2eTrLpVE89c+RLgqoxE0O6p0SU=",
+        "path": "./ntk",
+        "type": "path"
+      },
+      "original": {
+        "path": "./ntk",
+        "type": "path"
+      }
+    },
     "pact": {
       "inputs": {
         "flake-utils": [
@@ -233,6 +245,7 @@
         "home-manager": "home-manager",
         "ncrandr": "ncrandr",
         "nixpkgs": "nixpkgs",
+        "ntk": "ntk",
         "pact": "pact",
         "sql": "sql",
         "systems": "systems",

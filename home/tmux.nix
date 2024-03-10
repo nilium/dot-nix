@@ -1,4 +1,14 @@
-{
+options @ {pkgs, ...}: let
+  defaultLinuxCopy = let
+    xsel = "${pkgs.xsel}/bin/xsel";
+  in "${xsel} -i -c && ${xsel} -o -c | ${xsel} -i -p";
+  defaultMacCopy = "pbcopy"; # System copy.
+  defaultCopy =
+    if pkgs.stdenv.isDarwin
+    then defaultMacCopy
+    else defaultLinuxCopy;
+  copyCommand = options.copyCommand or defaultCopy;
+in {
   programs.tmux = {
     enable = true;
 
@@ -23,7 +33,7 @@
       bind '|' split-window -h -c "#{pane_current_path}"
       bind '"' split-window -v -c "#{pane_current_path}"
 
-      bind -Tcopy-mode-vi 'y' send -X copy-pipe-and-cancel 'xclip -i -selection c && xclip -o -selection c | xclip -i -selection p'
+      bind -Tcopy-mode-vi 'y' send -X copy-pipe-and-cancel '${copyCommand}'
       bind -Tcopy-mode-vi 'v' send -X begin-selection
 
       bind -r h select-pane -L
