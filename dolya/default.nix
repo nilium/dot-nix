@@ -32,6 +32,9 @@ in {
         home.stateVersion = "23.11";
       }
 
+      # Use updated nix because of command deprecations.
+      ../home/unstable-nix.nix
+
       # afmt / cmt$Width
       afmt.homeManagerModules.afmt
       {

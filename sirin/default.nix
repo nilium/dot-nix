@@ -31,6 +31,8 @@ in {
     modules = [
       nixpkgs.nixosModules.notDetected
       ../users/ncower.nix
+      # Use updated nix because of command deprecations.
+      ../home/unstable-nix.nix
       ../system/xorg.nix
       ../sirin/configuration.nix
     ];
@@ -42,6 +44,9 @@ in {
     # Specify your home configuration modules here, for example,
     # the path to your home.nix.
     modules = [
+      # Use updated nix because of command deprecations.
+      ../home/unstable-nix.nix
+
       afmt.homeManagerModules.afmt
       ncrandr.homeManagerModules.ncrandr
       pact.homeManagerModules.pact
@@ -68,7 +73,8 @@ in {
       ../home/fish.nix
       ../home/ssh.nix
       (import ../home/hlwm (overlayFlakes [ncrandr]))
-      ../home.nix
+
+      ./home.nix
     ];
   };
 }
