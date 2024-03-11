@@ -35,6 +35,10 @@ activate-home user=default-user host=default-host: (build-home user host)
 activate-host host=default-host:
 	nixos-rebuild --flake {{quote(_sel + host)}} boot
 
+# Schedule the current configuration for boot.
+switch-host host=default-host:
+	nixos-rebuild --flake {{quote(_sel + host)}} switch
+
 # Update a particular flake input.
 update input:
 	nix flake update {{quote(input)}}

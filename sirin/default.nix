@@ -30,11 +30,30 @@ in {
     inherit system;
     modules = [
       nixpkgs.nixosModules.notDetected
+
+      # Non-free packages
+      ({pkgs, ...}: let
+        inherit (pkgs) lib;
+      in {
+        nixpkgs.config.allowUnfreePredicate = pkg:
+          builtins.elem (lib.getName pkg) [
+            "steam"
+            "steam-original"
+            "steam-run"
+          ];
+      })
+
       ../users/ncower.nix
       # Use updated nix because of command deprecations.
       ../home/unstable-nix.nix
       ../system/xorg.nix
-      ../sirin/configuration.nix
+      ./configuration.nix
+      {
+        programs.steam = {
+          enable = true;
+          remotePlay.openFirewall = true;
+        };
+      }
     ];
   };
 
