@@ -72,6 +72,8 @@ in {
       {
         home.packages = [(flakePackages fex).fex];
       }
+      ../home/pkgs-common.nix
+      ../home/pkgs-linux.nix
       {
         imports = [
           ../modules/pbcopy.nix

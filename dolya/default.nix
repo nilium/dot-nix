@@ -74,36 +74,7 @@ in {
       (import ../home/helix {inherit (overlayFlakes [helix]) helix;})
 
       # Misc packages
-      {
-        home.packages = [
-          pkgs.alejandra
-          pkgs.bmake
-          pkgs.curl
-          pkgs.entr
-          pkgs.fd
-          pkgs.fzf
-          pkgs.gh
-          pkgs.git
-          pkgs.gnumake
-          pkgs.gnused
-          pkgs.htop
-          pkgs.jq
-          pkgs.just
-          pkgs.miller
-          pkgs.nil
-          pkgs.ripgrep
-          pkgs.socat
-          pkgs.tokei
-          pkgs.tree
-          pkgs.unzip
-          pkgs.ruby
-          pkgs.wget
-
-          pkgs.crystal
-          pkgs.go_1_22
-          pkgs.rustup
-        ];
-      }
+      ../home/pkgs-common.nix
 
       # tmux configuration
       ../home/tmux.nix
