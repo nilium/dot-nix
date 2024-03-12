@@ -100,6 +100,21 @@
         "type": "github"
       }
     },
+    "nix-hardware": {
+      "locked": {
+        "lastModified": 1710123225,
+        "narHash": "sha256-j3oWlxRZxB7cFsgEntpH3rosjFHRkAo/dhX9H3OfxtY=",
+        "owner": "nixos",
+        "repo": "nixos-hardware",
+        "rev": "ad2fd7b978d5e462048729a6c635c45d3d33c9ba",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "helix": {
       "inputs": {
         "crane": [
@@ -241,6 +256,7 @@
         "crane": "crane",
         "fex": "fex",
         "flake-utils": "flake-utils",
+        "nix-hardware": "nix-hardware",
         "helix": "helix",
         "home-manager": "home-manager",
         "ncrandr": "ncrandr",

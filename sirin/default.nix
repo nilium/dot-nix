@@ -1,5 +1,6 @@
 {
   nixpkgs,
+  nix-hardware,
   ntk,
   home-manager,
   ncrandr,
@@ -30,6 +31,7 @@ in {
     inherit system;
     modules = [
       nixpkgs.nixosModules.notDetected
+      nix-hardware.nixosModules.framework-13th-gen-intel
 
       # Non-free packages
       ({pkgs, ...}: let
