@@ -5,7 +5,6 @@
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     systems.url = "github:nix-systems/default";
     nix-hardware.url = "github:nixos/nixos-hardware";
-    ntk.url = "path:./ntk";
 
     # TODO: swtich to flake-parts? Not sure it's decidedly better still.
     flake-utils = {

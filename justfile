@@ -47,7 +47,6 @@ update input:
 update-local: (update 'afmt') \
               (update 'ncrandr') \
               (update 'pact') \
-			  (update 'ntk') \
 
 # Update nixpkgs.
 update-packages: (update 'nixpkgs')
