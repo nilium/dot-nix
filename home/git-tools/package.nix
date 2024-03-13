@@ -1,5 +1,4 @@
 {
-  system,
   lib,
   stdenv,
   writeScriptBin,

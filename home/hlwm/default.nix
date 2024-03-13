@@ -1,8 +1,13 @@
-{ncrandr, ...}: {pkgs, ...}: let
-  inherit (pkgs) lib stdenv;
-
-  inherit (pkgs) herbstluftwm pact gnugrep gawk coreutils hsetroot xorg;
+{
+  ncrandr,
+  pact,
+  ...
+}: {pkgs, ...}: let
+  inherit (pkgs) lib stdenv system;
+  inherit (pkgs) herbstluftwm gnugrep gawk coreutils hsetroot xorg;
   inherit (xorg) xmodmap xset;
+
+  pact' = pact.packages.${system}.default;
 
   polybar = pkgs.polybar.override {
     alsaSupport = true;
@@ -19,7 +24,7 @@
       mkdir -p "$out/bin"
       install $src "$out/bin/autostart"
       wrapProgram "$out/bin/autostart" \
-        --prefix PATH : ${lib.makeBinPath [ncrandr pact hsetroot xmodmap xset]} \
+        --prefix PATH : ${lib.makeBinPath [ncrandr pact' hsetroot xmodmap xset]} \
         --suffix PATH : ${lib.makeBinPath [polybar herbstluftwm gawk gnugrep coreutils]}
     '';
 

@@ -1,5 +1,5 @@
 {pkgs, ...}: let
-  git-tools = pkgs.callPackage ./default.nix {};
+  git-tools = pkgs.callPackage ./package.nix {};
 in {
   home.packages = [git-tools];
 }

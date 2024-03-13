@@ -70,8 +70,10 @@
 
   outputs = inputs @ {flake-utils, ...}:
     flake-utils.lib.meld inputs [
-      ./dot-shell.nix
-      ./sirin
-      ./dolya
+      ./nixos # nixosModules
+      ./home # homeManagerModules
+      ./dot-shell.nix # devShells
+      ./sirin # sirin, x86_64-linux
+      ./dolya # dolya, aarch64-darwin
     ];
 }

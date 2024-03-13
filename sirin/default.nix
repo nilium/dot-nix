@@ -1,35 +1,22 @@
 {
+  self,
   nixpkgs,
   nix-hardware,
-  ntk,
   home-manager,
   ncrandr,
   afmt,
-  fex,
   pact,
-  sql,
-  helix,
   typst,
   ...
 }: let
   system = "x86_64-linux";
-  inherit (ntk.lib.forSystem system) flakePackages overlayFlakes;
-
-  extra-packages = final: prev: {
-    inherit (overlayFlakes [pact]) pact;
-    inherit (flakePackages helix) helix;
-    typst = (flakePackages typst).default;
-    ncower = (prev.ncower or {}) // overlayFlakes [sql];
-  };
-
-  pkgs = import nixpkgs {
-    inherit system;
-    overlays = [extra-packages];
-  };
+  pkgs = nixpkgs.legacyPackages.${system};
 in {
   nixosConfigurations.sirin = nixpkgs.lib.nixosSystem {
     inherit system;
-    modules = [
+    modules = let
+      self' = self.nixosModules;
+    in [
       nixpkgs.nixosModules.notDetected
       nix-hardware.nixosModules.framework-13th-gen-intel
 
@@ -45,11 +32,13 @@ in {
           ];
       })
 
-      ../users/ncower.nix
       # Use updated nix because of command deprecations.
-      ../home/unstable-nix.nix
-      ../system/xorg.nix
+      self'.unstable-nix
       ./configuration.nix
+
+      self'.user-ncower
+      self'.xorg
+
       {
         programs.steam = {
           enable = true;
@@ -64,38 +53,36 @@ in {
 
     # Specify your home configuration modules here, for example,
     # the path to your home.nix.
-    modules = [
+    modules = let
+      self' = self.homeManagerModules;
+    in [
       # Use updated nix because of command deprecations.
-      ../home/unstable-nix.nix
+      self'.unstable-nix
 
       afmt.homeManagerModules.afmt
       ncrandr.homeManagerModules.ncrandr
       pact.homeManagerModules.pact
-      {
-        home.packages = [(flakePackages fex).fex];
-      }
-      ../home/pkgs-common.nix
-      ../home/pkgs-linux.nix
-      {
-        imports = [
-          ../modules/pbcopy.nix
-          ../fish/default.nix
-          ../home/fmt.nix
-        ];
-      }
-      ../git-tools/git-tools.nix
-      ../home/kitty.nix
-      (import ../home/git.nix {
+
+      self'.packages-common
+      self'.packages-linux
+      ({pkgs, ...}: {
+        home.packages = [typst.packages.${system}.default];
+      })
+      self'.fmt
+      self'.git-tools
+      self'.kitty
+      (self'.git {
         signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGJMs/x7sWSkjVY5tNBHlLOF6puCPljTWbbyUTL6rpnF";
       })
-      ../home/scr.nix
-      ../home/tmux.nix
-      ../home/pueue.nix
-      (import ../home/helix {inherit (overlayFlakes [helix]) helix;})
-      ../home/nushell.nix
-      ../home/fish.nix
-      ../home/ssh.nix
-      (import ../home/hlwm (overlayFlakes [ncrandr]))
+      self'.scr
+      self'.tmux
+      self'.pueue
+      self'.pbcopy
+      self'.helix
+      self'.nushell
+      self'.fish
+      self'.ssh
+      self'.hlwm
 
       ./home.nix
     ];

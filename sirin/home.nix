@@ -32,9 +32,7 @@ in {
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = let
-    inherit (pkgs) ncower;
-  in [
+  home.packages = [
     (pkgs.writeScriptBin "batteries" ''
       #!${pkgs.fish}/bin/fish
       set upower ${pkgs.upower}/bin/upower
