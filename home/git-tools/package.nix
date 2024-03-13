@@ -1,7 +1,7 @@
 {
   lib,
   stdenv,
-  writeScriptBin,
+  writeScript,
   writeShellApplication,
   symlinkJoin,
   ruby,
@@ -12,7 +12,7 @@
 }: let
   script = src: deps: let
     name = baseNameOf src;
-    script = writeScriptBin name (builtins.readFile src);
+    script = writeScript name (builtins.readFile src);
     runtimeInputs = [script] ++ deps;
   in
     writeShellApplication {
