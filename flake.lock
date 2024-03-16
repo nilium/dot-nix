@@ -160,7 +160,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-7XSAi2G1nF/3A+4jKkAKy6RQoL7H/DaQpx+rVTC7e1o=",
+        "narHash": "sha256-tcNa15kgQoI7WKKL5l3T8WFddI5K59MI1AhM4It/GnQ=",
         "path": "./ncrandr",
         "type": "path"
       },

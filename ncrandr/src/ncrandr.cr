@@ -37,7 +37,10 @@ class Output
       return
     end
     edid = edid_props[0]
-    @edid_hash = sha256(edid[1..-1].map { |line| line.strip }.join(""))
+    edid_line = edid[1..-1]
+      .take_while { |line| line.starts_with? "\t\t" }
+      .map { |line| line.strip }.join("")
+    @edid_hash = sha256(edid_line)
   end
 
   def connected?
