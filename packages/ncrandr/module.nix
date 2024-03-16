@@ -1,10 +1,10 @@
-{ncrandr}: {
+self: {
   lib,
   pkgs,
   config,
   ...
 }: let
-  inherit (pkgs) writeShellApplication;
+  inherit (pkgs) system writeShellApplication;
   inherit
     (lib)
     mkIf
@@ -15,6 +15,7 @@
     attrsToList
     hasAttr
     ;
+  inherit (self.packages.${system}) ncrandr;
   cfg = config.programs.ncrandr;
 in {
   options.programs.ncrandr = {

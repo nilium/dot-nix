@@ -1,9 +1,10 @@
-{pact}: {
+self: {
   lib,
   pkgs,
   config,
   ...
 }: let
+  inherit (self.packages.${pkgs.system}) pact;
   inherit (lib) mkIf mkEnableOption;
   cfg = config.programs.pact;
 in {

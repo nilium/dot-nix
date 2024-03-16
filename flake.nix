@@ -22,26 +22,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    ncrandr = {
-      url = "path:./ncrandr";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
-
-    afmt = {
-      url = "path:./afmt";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
-
     fex = {
       url = "sourcehut:~nilium/go-fex";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
-
-    pact = {
-      url = "path:./pact";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };

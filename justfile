@@ -3,17 +3,25 @@ default-user := `id -nu`
 
 _sel := '.#'
 
+packages := `
+	nix flake show --quiet --quiet --json |
+	jq -r \
+		--argjson system "$(nix eval --impure --json --expr 'builtins.currentSystem')" \
+		'.packages[$system] | keys | map(".#\(.)" | @sh) | join(" ")'
+`
+
 # This stops short of enabling experimental features because it's really required for any of this
 # to work and should be set for the system, so probably better to keep this free of overrides that
 # could mislead later.
 home-manager := 'nix run --inputs-from . home-manager -- '
 
+
 # Build the current home configuration.
 default: build-home
 
 # Build either a home or host config.
-build home-or-host *args:
-	@just build-{{home-or-host}} {{args}}
+build home-or-host-or-pkg *args:
+	@just build-{{home-or-host-or-pkg}} {{args}}
 
 # Build a home-manager config.
 build-home user=default-user host=default-host:
@@ -22,6 +30,14 @@ build-home user=default-user host=default-host:
 # Build a NixOS host config.
 build-host host=default-host:
 	nixos-rebuild --flake {{quote(_sel + host)}} build
+
+# Build all package outputs for the current system.
+build-pkgs:
+	nix build {{packages}}
+
+# Build a package output.
+build-pkg name:
+	nix build {{quote(_sel + name)}}
 
 # Activate a home or host config.
 activate home-or-host *args:
@@ -42,11 +58,6 @@ switch-host host=default-host:
 # Update a particular flake input.
 update input:
 	nix flake update {{quote(input)}}
-
-# Update local in-repo flake inputs.
-update-local: (update 'afmt') \
-              (update 'ncrandr') \
-              (update 'pact') \
 
 # Update nixpkgs.
 update-packages: (update 'nixpkgs')

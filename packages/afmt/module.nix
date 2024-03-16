@@ -1,9 +1,10 @@
-{afmt}: {
+self: {
   lib,
   pkgs,
   config,
   ...
 }: let
+  inherit (self.packages.${pkgs.system}) afmt;
   inherit (lib) mkIf mkEnableOption mkOption types;
   cfg = config.programs.afmt;
 in {
@@ -33,17 +34,10 @@ in {
     };
   };
   config = let
-    cmtWidth = width: let
-      name = cfg.cmt.name;
-      width' = toString width;
-      goal = toString (width - 2);
-    in
-      pkgs.writeShellApplication {
-        name = "${name}${width'}";
-        text = ''exec ${afmt}/bin/afmt -w${width'} -g${goal} "''$@"'';
-      };
-
-    cmtScripts = map cmtWidth cfg.cmt.widths;
+    cmtScripts = self.lib.generators.cmtPackages {
+      inherit pkgs;
+      inherit (cfg.cmt) name widths;
+    };
     cmtScripts' = lib.optionals cfg.cmt.enable cmtScripts;
   in
     mkIf cfg.enable {
