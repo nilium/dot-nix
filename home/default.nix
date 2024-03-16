@@ -1,10 +1,9 @@
 {
+  self,
   helix,
   fex,
   sql,
-  ncrandr,
   typst,
-  pact,
   ...
 }: {
   homeManagerModules = {
@@ -41,7 +40,7 @@
       imports = [./helix];
       programs.helix.package = helix';
     };
-    hlwm = args @ {pkgs, ...}: import ./hlwm {inherit ncrandr pact;} args;
+    hlwm = args @ {pkgs, ...}: import ./hlwm self args;
     kitty = import ./kitty.nix;
     nushell = import ./nushell.nix;
     pbcopy = import ./pbcopy.nix;

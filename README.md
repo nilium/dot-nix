@@ -15,22 +15,6 @@ For the most part, this shouldn't require any special environment other than
 and `alejandra` for quick changes when I want to make sure formatting is
 right and to run builds easily.
 
-## Quirks
-
-This is a list of quirks that can come up that I occasionally forget
-about. Mostly error messages that are esoteric and I tend to see only once
-per machine.
-
-### Cannot fetch input `path:...` because it uses a relative path
-
-This is due to flakes with relative inputs not too smart. The gist of this
-is that the subflakes need to be interacted with in some way before the
-top-level flake can be used. For now, the easiest way to do this is to run
-`just update-local`. On Nix before 2.19, use `nix flake lock --inputs-from
-. --update-input ...` instead, since I can't have this be consistent right now.
-
-Nix might eventually be smarter than this, but it isn't right now.
-
 ### Just Recipes
 
 The following recipes in the `justfile` can be used for convenience. They
@@ -38,9 +22,9 @@ will always try to build for the current username and hostname. The default
 recipe is to build the current user's home-manager config. These can also
 be listed using `just --list`.
 
-  * `build {home|host} [args...]` - Build either the current home or host
-    config. Extra arguments are passed to the `build-home` or `build-host`
-    recipes.
+  * `build {home|host|pkg} [args...]` - Build either the current home or host
+    config or a package output. Extra arguments are passed to the `build-home`
+    or `build-host` recipes.
 
   * `build-home [user@host]` - Build the given username and host home-manager
     configuration. This attempts to run `home-manager` from the pinned input,
@@ -50,6 +34,8 @@ be listed using `just --list`.
   * `build-host [host]` - Build the given host NixOS configuration. Like normal
     `nixos-rebuild`, this tries to build the current hostname's output unless
     another is given.
+
+  * `build-pkg {pkg}` - Build a package output.
 
   * `activate {home|host} [args...]` - Activate either the current home or host
     config. Extra arguments are passed to `activate-home` or `activate-host`.

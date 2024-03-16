@@ -3,9 +3,6 @@
   nixpkgs,
   nix-hardware,
   home-manager,
-  ncrandr,
-  afmt,
-  pact,
   typst,
   ...
 }: let
@@ -59,9 +56,8 @@ in {
       # Use updated nix because of command deprecations.
       self'.unstable-nix
 
-      afmt.homeManagerModules.afmt
-      ncrandr.homeManagerModules.ncrandr
-      pact.homeManagerModules.pact
+      self'.ncrandr
+      self'.pact
 
       self'.packages-common
       self'.packages-linux
@@ -70,6 +66,7 @@ in {
         home.packages = [typst.packages.${system}.default];
       })
 
+      self'.afmt
       self'.fmt
       self'.git-tools
       self'.kitty

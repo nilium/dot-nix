@@ -1,7 +1,7 @@
 {
+  self,
   nixpkgs,
   flake-utils,
-  afmt,
   ...
 }:
 flake-utils.lib.eachDefaultSystem (
@@ -9,12 +9,15 @@ flake-utils.lib.eachDefaultSystem (
     pkgs = nixpkgs.legacyPackages.${system};
   in {
     devShells.default = pkgs.mkShell {
-      buildInputs = [
-        pkgs.alejandra
-        pkgs.nil
-        pkgs.just
-        afmt.packages.${system}.default
-      ];
+      buildInputs =
+        [
+          pkgs.alejandra
+          pkgs.jq
+          pkgs.just
+          pkgs.nil
+          self.packages.${system}.afmt
+        ]
+        ++ self.lib.generators.cmtPackages {inherit pkgs;};
     };
   }
 )

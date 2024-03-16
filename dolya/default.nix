@@ -2,7 +2,6 @@
   self,
   nixpkgs,
   home-manager,
-  afmt,
   ...
 }: let
   system = "aarch64-darwin";
@@ -23,14 +22,15 @@ in {
       # Use updated nix because of command deprecations.
       self'.unstable-nix
 
-      # afmt / cmt$Width
-      afmt.homeManagerModules.afmt
+      # afmt / cmt$Width / fmt$Width
+      self'.afmt
+      self'.fmt
       {
         programs.afmt.enable = true;
         programs.afmt.cmt.enable = true;
       }
 
-      self'.fmt
+      # Miscellaneous packages
       self'.packages-common
       self'.packages-local
 

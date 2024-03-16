@@ -8,12 +8,13 @@ _sel := '.#'
 # could mislead later.
 home-manager := 'nix run --inputs-from . home-manager -- '
 
+
 # Build the current home configuration.
 default: build-home
 
 # Build either a home or host config.
-build home-or-host *args:
-	@just build-{{home-or-host}} {{args}}
+build home-or-host-or-pkg *args:
+	@just build-{{home-or-host-or-pkg}} {{args}}
 
 # Build a home-manager config.
 build-home user=default-user host=default-host:
@@ -22,6 +23,10 @@ build-home user=default-user host=default-host:
 # Build a NixOS host config.
 build-host host=default-host:
 	nixos-rebuild --flake {{quote(_sel + host)}} build
+
+# Build a package output.
+build-pkg name:
+	nix build {{quote(_sel + name)}}
 
 # Activate a home or host config.
 activate home-or-host *args:
@@ -42,11 +47,6 @@ switch-host host=default-host:
 # Update a particular flake input.
 update input:
 	nix flake update {{quote(input)}}
-
-# Update local in-repo flake inputs.
-update-local: (update 'afmt') \
-              (update 'ncrandr') \
-              (update 'pact') \
 
 # Update nixpkgs.
 update-packages: (update 'nixpkgs')
