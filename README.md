@@ -3,6 +3,11 @@
 Dotfiles as Nix configuration. This is likely to be perpetually unstable
 and work-in-progress.
 
+## Machines
+
+  * [Sirin](./sirin), a gen 13 Framework laptop.
+  * [Dolya](./dolya), an M1 Macbook Pro.
+
 ## Usage
 
 For the most part, this shouldn't require any special environment other than
@@ -21,7 +26,8 @@ per machine.
 This is due to flakes with relative inputs not too smart. The gist of this
 is that the subflakes need to be interacted with in some way before the
 top-level flake can be used. For now, the easiest way to do this is to run
-`just update-local`.
+`just update-local`. On Nix before 2.19, use `nix flake lock --inputs-from
+. --update-input ...` instead, since I can't have this be consistent right now.
 
 Nix might eventually be smarter than this, but it isn't right now.
 
