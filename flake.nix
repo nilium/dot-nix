@@ -69,6 +69,7 @@
 
   outputs = inputs @ {flake-utils, ...}:
     flake-utils.lib.meld inputs [
+      ./packages # Shared packages
       ./nixos # nixosModules
       ./home # homeManagerModules
       ./dot-shell.nix # devShells

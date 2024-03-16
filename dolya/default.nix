@@ -32,6 +32,7 @@ in {
 
       self'.fmt
       self'.packages-common
+      self'.packages-local
 
       # Shells
       self'.fish

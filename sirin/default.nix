@@ -65,9 +65,11 @@ in {
 
       self'.packages-common
       self'.packages-linux
+      self'.packages-local
       ({pkgs, ...}: {
         home.packages = [typst.packages.${system}.default];
       })
+
       self'.fmt
       self'.git-tools
       self'.kitty
