@@ -1,14 +1,12 @@
 {
   self,
-  nixpkgs,
-  flake-utils,
+  lib',
   ...
 }:
-{
-  homeManagerModules.ncrandr = import ./module.nix self;
+lib'.mkFlake' {
+  outputs.homeManagerModules.ncrandr = import ./module.nix self;
+
+  perSystem = {pkgs', ...}: {
+    packages.ncrandr = pkgs'.callPackage ./package.nix {};
+  };
 }
-// flake-utils.lib.eachDefaultSystem (system: let
-  pkgs = nixpkgs.legacyPackages.${system};
-in {
-  packages.ncrandr = pkgs.callPackage ./package.nix {};
-})

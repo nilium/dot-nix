@@ -1,15 +1,13 @@
 {
   self,
-  nixpkgs,
-  flake-utils,
+  lib',
   ...
 }:
-{
-  homeManagerModules.afmt = import ./module.nix self;
-  lib.generators.cmtPackages = import ./cmt.nix self;
+lib'.mkFlake' {
+  outputs.homeManagerModules.afmt = import ./module.nix self;
+  outputs.lib.generators.cmtPackages = import ./cmt.nix self;
+
+  perSystem = {pkgs', ...}: {
+    packages.afmt = pkgs'.callPackage ./package.nix {};
+  };
 }
-// flake-utils.lib.eachDefaultSystem (system: let
-  pkgs = nixpkgs.legacyPackages.${system};
-in {
-  packages.afmt = pkgs.callPackage ./package.nix {};
-})

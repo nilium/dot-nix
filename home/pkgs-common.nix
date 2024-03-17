@@ -18,6 +18,7 @@ in {
       pkgs.gnumake
       pkgs.gnused
       pkgs.gnutar
+      pkgs.gron
       pkgs.jq
       pkgs.just
       pkgs.killall

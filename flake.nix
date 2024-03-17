@@ -3,13 +3,11 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    systems.url = "github:nix-systems/default";
     nix-hardware.url = "github:nixos/nixos-hardware";
 
-    # TODO: swtich to flake-parts? Not sure it's decidedly better still.
-    flake-utils = {
-      url = "github:numtide/flake-utils";
-      inputs.systems.follows = "systems";
+    ntk = {
+      url = "github:nilium/dot-nix/lib";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     crane = {
@@ -25,37 +23,40 @@
     fex = {
       url = "sourcehut:~nilium/go-fex";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
     };
 
     sql = {
       url = "sourcehut:~nilium/sql";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
     };
 
     helix = {
       url = "github:nilium/helix/nil-23.10";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
       inputs.crane.follows = "crane";
     };
 
     typst = {
       url = "github:typst/typst";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.systems.follows = "systems";
       inputs.crane.follows = "crane";
     };
   };
 
-  outputs = inputs @ {flake-utils, ...}:
-    flake-utils.lib.meld inputs [
+  outputs = inputs @ {ntk, ...}: (
+    ntk.lib.merge inputs [
+      # Modules
       ./packages # Shared packages
       ./nixos # Most NixOS modules
       ./home # Most home-manager modules
-      ./dot-shell.nix # devShells
+
+      # Machines
       ./sirin # sirin, x86_64-linux
       ./dolya # dolya, aarch64-darwin
-    ];
+
+      # Common outputs
+      ./dot-shell.nix # devShells
+      ./formatter.nix # Formatter
+    ]
+  );
 }
