@@ -2,13 +2,12 @@
   description = "Noel's dotfiles flake library";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nixpkgs-lib.url = "github:NixOS/nixpkgs/nixpkgs-unstable?dir=lib";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable?dir=lib";
   };
 
-  outputs = inputs @ {nixpkgs-lib, ...}: let
+  outputs = inputs @ {nixpkgs, ...}: let
     lib = import ./lib.nix {
-      nixpkgs.lib = nixpkgs-lib.lib;
+      inherit nixpkgs;
       systems = [
         "x86_64-linux"
         "aarch64-linux"
