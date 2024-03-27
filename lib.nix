@@ -62,17 +62,16 @@
       outputs ? {},
       ...
     }:
-      builtins.foldl' recursiveUpdate {}
-      ([outputs]
-        ++ (map (system: let
-          args = {
-            inherit inputs system;
-            self' = forSystem system (inputs.self or {});
-            pkgs' = inputs.nixpkgs.legacyPackages.${system} or {};
-          };
-        in
-          mkSystemAttrs args perSystem)
-        systems));
+      builtins.foldl' recursiveUpdate outputs
+      (map (system: let
+        args = {
+          inherit inputs system;
+          self' = forSystem system (inputs.self or {});
+          pkgs' = inputs.nixpkgs.legacyPackages.${system} or {};
+        };
+      in
+        mkSystemAttrs args perSystem)
+      systems);
 
     # This function is more or less flake-utils.lib.meld, but accepts paths,
     # sets, and functions, because sometimes I want code next to the inner
