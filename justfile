@@ -18,7 +18,7 @@ build home-or-host-or-pkg *args:
 
 # Build a home-manager config.
 build-home user=default-user host=default-host:
-	{{home-manager}} --flake {{quote(_sel + user + '@' + host)}} build
+	{{home-manager}} --flake {{quote(_sel + user + '@' + host)}} build --impure
 	
 # Build a NixOS host config.
 build-host host=default-host:
@@ -34,7 +34,7 @@ activate home-or-host *args:
 
 # Switch to the current configuration.
 activate-home user=default-user host=default-host: (build-home user host)
-	{{home-manager}} --flake {{quote(_sel + user + '@' + host)}} switch
+	{{home-manager}} --flake {{quote(_sel + user + '@' + host)}} switch --impure
 
 # Schedule the current configuration for boot.
 activate-host host=default-host:
