@@ -45,45 +45,50 @@ in {
     ];
   };
 
-  homeConfigurations."ncower@sirin" = home-manager.lib.homeManagerConfiguration {
-    inherit pkgs;
+  homeConfigurations."ncower@sirin" = let
+    pkgs' = pkgs.extend (final: prev: {
+      herbstluftwm = prev.herbstluftwm.overrideAttrs (old: {doCheck = false;});
+    });
+  in
+    home-manager.lib.homeManagerConfiguration {
+      pkgs = pkgs';
 
-    # Specify your home configuration modules here, for example,
-    # the path to your home.nix.
-    modules = let
-      self' = self.homeManagerModules;
-    in [
-      # Use updated nix because of command deprecations.
-      self'.unstable-nix
+      # Specify your home configuration modules here, for example,
+      # the path to your home.nix.
+      modules = let
+        self' = self.homeManagerModules;
+      in [
+        # Use updated nix because of command deprecations.
+        self'.unstable-nix
 
-      self'.ncrandr
-      self'.pact
+        self'.ncrandr
+        self'.pact
 
-      self'.packages-common
-      self'.packages-linux
-      self'.packages-local
-      ({pkgs, ...}: {
-        home.packages = [typst.packages.${system}.default];
-      })
+        self'.packages-common
+        self'.packages-linux
+        self'.packages-local
+        ({pkgs, ...}: {
+          home.packages = [typst.packages.${system}.default];
+        })
 
-      self'.afmt
-      self'.fmt
-      self'.git-tools
-      self'.kitty
-      (self'.git {
-        signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGJMs/x7sWSkjVY5tNBHlLOF6puCPljTWbbyUTL6rpnF";
-      })
-      self'.scr
-      self'.tmux
-      self'.pueue
-      self'.pbcopy
-      self'.helix
-      self'.nushell
-      self'.fish
-      self'.ssh
-      self'.hlwm
+        self'.afmt
+        self'.fmt
+        self'.git-tools
+        self'.kitty
+        (self'.git {
+          signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGJMs/x7sWSkjVY5tNBHlLOF6puCPljTWbbyUTL6rpnF";
+        })
+        self'.scr
+        self'.tmux
+        self'.pueue
+        self'.pbcopy
+        self'.helix
+        self'.nushell
+        self'.fish
+        self'.ssh
+        self'.hlwm
 
-      ./home.nix
-    ];
-  };
+        ./home.nix
+      ];
+    };
 }
