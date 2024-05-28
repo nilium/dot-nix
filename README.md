@@ -7,6 +7,7 @@ and work-in-progress.
 
   * [Sirin](./sirin), a gen 13 Framework laptop.
   * [Dolya](./dolya), an M1 Macbook Pro.
+  * [Veles](./veles), Thinkpad T480 running Ubuntu, mainly for testing config.
 
 ## Usage
 
