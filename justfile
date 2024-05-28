@@ -3,6 +3,8 @@ default-user := `id -nu`
 
 _sel := '.#'
 
+export NIX_CONFIG := 'experimental-features = nix-command flakes'
+
 # This stops short of enabling experimental features because it's really required for any of this
 # to work and should be set for the system, so probably better to keep this free of overrides that
 # could mislead later.
