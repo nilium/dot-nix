@@ -16,6 +16,8 @@ lib'.mkFlake' {
           pkgs'.jq
           pkgs'.just
           pkgs'.nil
+          pkgs'.git
+          pkgs'.helix
           self'.packages.afmt
         ]
         ++ self.lib.generators.cmtPackages {pkgs = pkgs';};
