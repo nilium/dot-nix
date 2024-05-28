@@ -1,14 +1,22 @@
-self: {pkgs, ...}: let
-  inherit (pkgs) lib stdenv system;
+self: {
+  pkgs,
+  config,
+  ...
+}: let
+  inherit (pkgs) lib stdenv writeScript system;
   inherit (pkgs) herbstluftwm gnugrep gawk coreutils hsetroot xorg;
   inherit (xorg) xmodmap xset;
   inherit (self.packages.${system}) pact ncrandr;
+
+  cfg = config.programs.herbstluftwm;
 
   polybar = pkgs.polybar.override {
     alsaSupport = true;
     mpdSupport = true;
     pulseSupport = true;
   };
+
+  autostartExtra = writeScript "hlwm-autostart-extra" cfg.extraSettings;
 
   autostart = stdenv.mkDerivation {
     name = "hlwm-autostart";
@@ -20,7 +28,8 @@ self: {pkgs, ...}: let
       install $src "$out/bin/autostart"
       wrapProgram "$out/bin/autostart" \
         --prefix PATH : ${lib.makeBinPath [ncrandr pact hsetroot xmodmap xset]} \
-        --suffix PATH : ${lib.makeBinPath [polybar herbstluftwm gawk gnugrep coreutils]}
+        --suffix PATH : ${lib.makeBinPath [polybar herbstluftwm gawk gnugrep coreutils]} \
+        --set AUTOSTART_EXTRA ${autostartExtra}
     '';
 
     nativeBuildInputs = [pkgs.makeWrapper];
@@ -51,18 +60,27 @@ self: {pkgs, ...}: let
 
   polybar-config = pkgs.callPackage ./polybar.nix {};
 in {
-  home.packages = [
-    hlwm-use
-  ];
+  options.programs.herbstluftwm.xsession = lib.options.mkEnableOption "Enable herbstluftwm through xsession";
 
-  xsession = {
-    enable = true;
-    windowManager.command = "${pkgs.herbstluftwm}/bin/herbstluftwm";
+  options.programs.herbstluftwm.extraSettings = lib.mkOption {
+    description = "Extra config to append to generated autostart config.";
+    type = lib.types.str;
+    default = "";
   };
 
-  xdg.configFile."herbstluftwm/autostart".source = pkgs.writeShellScript "herbstluftwm-autostart" ''
-    exec ${autostart}/bin/autostart
-  '';
+  config = {
+    home.packages = [
+      hlwm-use
+    ];
 
-  xdg.configFile."herbstluftwm/polybar.ini".source = polybar-config;
+    xsession = lib.ifEnable cfg.xsession {
+      windowManager.command = "${pkgs.herbstluftwm}/bin/herbstluftwm";
+    };
+
+    xdg.configFile."herbstluftwm/autostart".source = pkgs.writeShellScript "herbstluftwm-autostart" ''
+      exec ${autostart}/bin/autostart
+    '';
+
+    xdg.configFile."herbstluftwm/polybar.ini".source = polybar-config;
+  };
 }

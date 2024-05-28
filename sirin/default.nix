@@ -86,7 +86,11 @@ in {
         self'.nushell
         self'.fish
         self'.ssh
-        self'.hlwm
+        {
+          imports = [self'.hlwm];
+          xsession.enable = true;
+          programs.herbstluftwm.xsession = true;
+        }
 
         ./home.nix
       ];
