@@ -5,6 +5,9 @@
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     nix-hardware.url = "github:nixos/nixos-hardware";
 
+    nixgl.url = "github:nix-community/nixGL?ref=main";
+    nixgl.inputs.nixpkgs.follows = "nixpkgs";
+
     ntk = {
       url = "github:nilium/dot-nix/lib";
       inputs.nixpkgs.follows = "nixpkgs";

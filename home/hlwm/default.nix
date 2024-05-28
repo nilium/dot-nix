@@ -29,6 +29,7 @@ self: {
       wrapProgram "$out/bin/autostart" \
         --prefix PATH : ${lib.makeBinPath [ncrandr pact hsetroot xmodmap xset]} \
         --suffix PATH : ${lib.makeBinPath [polybar herbstluftwm gawk gnugrep coreutils]} \
+        --set NIXGL ${lib.strings.escapeShellArg (lib.ifEnable cfg.nixgl "${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL")} \
         --set AUTOSTART_EXTRA ${autostartExtra}
     '';
 
@@ -60,12 +61,14 @@ self: {
 
   polybar-config = pkgs.callPackage ./polybar.nix {};
 in {
-  options.programs.herbstluftwm.xsession = lib.options.mkEnableOption "Enable herbstluftwm through xsession";
-
-  options.programs.herbstluftwm.extraSettings = lib.mkOption {
-    description = "Extra config to append to generated autostart config.";
-    type = lib.types.str;
-    default = "";
+  options.programs.herbstluftwm = {
+    xsession = lib.options.mkEnableOption "Enable herbstluftwm through xsession";
+    nixgl = lib.options.mkEnableOption "Prefix rofi and terminal commands with nixGL";
+    extraSettings = lib.mkOption {
+      description = "Extra config to append to generated autostart config.";
+      type = lib.types.str;
+      default = "";
+    };
   };
 
   config = {

@@ -49,10 +49,10 @@ Mod=Mod4   # Use the super key as the main modifier
 hc keybind $Mod-Shift-q quit
 hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-w close
-hc keybind $Mod-Return spawn "${TERMINAL:-kitty}" # use your $TERMINAL with xterm as fallback
+hc keybind $Mod-Return spawn $NIXGL "${TERMINAL:-kitty}" # use your $TERMINAL with xterm as fallback
 
 # Rofi (application launcher / window search).
-hc keybind $Mod-r spawn rofi -modi run -show run
+hc keybind $Mod-r spawn $NIXGL rofi -modi run -show run
 hc keybind $Mod-t spawn rofi -modi window -show window
 
 # Lock screen
@@ -232,6 +232,7 @@ display_hash="$(
     sort | md5sum | awk '{print $1}'
 )"
 case "$display_hash" in
+# TODO: move this to nix config
 e831af42b8182ca8702f0dc945b89b38)
     # Two screens, one portrait, one landscape. Split the portrait screen.
     hc set_monitors \
