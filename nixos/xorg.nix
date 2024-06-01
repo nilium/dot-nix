@@ -28,23 +28,24 @@
     synaptics.enable = false;
 
     # Enable libinput support for touchpad / mouse.
-    libinput = {
-      enable = true;
+  };
 
-      # Natural scrolling for regular mice.
-      mouse = {
-        naturalScrolling = true;
-      };
+  services.libinput = {
+    enable = true;
 
-      # Natural scrolling and the other usual options for touchpads.
-      touchpad = {
-        accelSpeed = "0.17";
-        naturalScrolling = true;
-        disableWhileTyping = true;
-        tapping = true;
-        # Don't reserve small regions of the touchpad to act as tappable buttons.
-        clickMethod = "clickfinger";
-      };
+    # Natural scrolling for regular mice.
+    mouse = {
+      naturalScrolling = true;
+    };
+
+    # Natural scrolling and the other usual options for touchpads.
+    touchpad = {
+      accelSpeed = "0.17";
+      naturalScrolling = true;
+      disableWhileTyping = true;
+      tapping = true;
+      # Don't reserve small regions of the touchpad to act as tappable buttons.
+      clickMethod = "clickfinger";
     };
   };
 }

@@ -15,7 +15,7 @@
   };
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.kernelPackages = pkgs.linuxPackages_6_7;
+  boot.kernelPackages = pkgs.linuxPackages_6_9;
 
   nix.gc = {
     automatic = true;
@@ -69,25 +69,25 @@
 
     # Disable synpatics because it's bad.
     synaptics.enable = false;
+  };
 
-    # Enable libinput support for touchpad / mouse.
-    libinput = {
-      enable = true;
+  # Enable libinput support for touchpad / mouse.
+  services.libinput = {
+    enable = true;
 
-      # Natural scrolling for regular mice.
-      mouse = {
-        naturalScrolling = true;
-      };
+    # Natural scrolling for regular mice.
+    mouse = {
+      naturalScrolling = true;
+    };
 
-      # Natural scrolling and the other usual options for touchpads.
-      touchpad = {
-        accelSpeed = "0.17";
-        naturalScrolling = true;
-        disableWhileTyping = true;
-        tapping = true;
-        # Don't reserve small regions of the touchpad to act as tappable buttons.
-        clickMethod = "clickfinger";
-      };
+    # Natural scrolling and the other usual options for touchpads.
+    touchpad = {
+      accelSpeed = "0.17";
+      naturalScrolling = true;
+      disableWhileTyping = true;
+      tapping = true;
+      # Don't reserve small regions of the touchpad to act as tappable buttons.
+      clickMethod = "clickfinger";
     };
   };
 

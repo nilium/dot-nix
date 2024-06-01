@@ -29,7 +29,11 @@ self: {
       wrapProgram "$out/bin/autostart" \
         --prefix PATH : ${lib.makeBinPath [ncrandr pact hsetroot xmodmap xset]} \
         --suffix PATH : ${lib.makeBinPath [polybar herbstluftwm gawk gnugrep coreutils]} \
-        --set NIXGL ${lib.strings.escapeShellArg (lib.ifEnable cfg.nixgl "${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL")} \
+        --set NIXGL ${lib.strings.escapeShellArg (
+        if cfg.nixgl
+        then "${pkgs.nixgl.auto.nixGLDefault}/bin/nixGL"
+        else ""
+      )} \
         --set AUTOSTART_EXTRA ${autostartExtra}
     '';
 

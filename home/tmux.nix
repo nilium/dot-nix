@@ -36,6 +36,8 @@ in {
       bind -Tcopy-mode-vi 'y' send -X copy-pipe-and-cancel '${copyCommand}'
       bind -Tcopy-mode-vi 'v' send -X begin-selection
 
+      bind -n C-\\ send-prefix
+
       bind -r h select-pane -L
       bind -r j select-pane -D
       bind -r k select-pane -U

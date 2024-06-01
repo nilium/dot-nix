@@ -3,7 +3,6 @@
   helix,
   fex,
   sql,
-  typst,
   ...
 }: {
   homeManagerModules = {
@@ -18,9 +17,6 @@
       ];
     });
     packages-linux = import ./pkgs-linux.nix;
-    packages-typst = {pkgs, ...}: {
-      home.packages = [typst.packages.${pkgs.system}.default];
-    };
 
     alacritty = import ./alacritty.nix;
     clipit = import ./clipit.nix;

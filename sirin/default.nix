@@ -3,7 +3,6 @@
   nixpkgs,
   nix-hardware,
   home-manager,
-  typst,
   ...
 }: let
   system = "x86_64-linux";
@@ -67,9 +66,6 @@ in {
         self'.packages-common
         self'.packages-linux
         self'.packages-local
-        ({pkgs, ...}: {
-          home.packages = [typst.packages.${system}.default];
-        })
 
         self'.afmt
         self'.fmt

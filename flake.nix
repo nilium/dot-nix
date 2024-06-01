@@ -2,7 +2,7 @@
   description = "Noel's home configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-24.05";
     nix-hardware.url = "github:nixos/nixos-hardware";
 
     nixgl.url = "github:nix-community/nixGL?ref=main";
@@ -19,7 +19,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/master";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -35,12 +35,6 @@
 
     helix = {
       url = "github:nilium/helix/nil-24.03";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.crane.follows = "crane";
-    };
-
-    typst = {
-      url = "github:typst/typst";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.crane.follows = "crane";
     };
