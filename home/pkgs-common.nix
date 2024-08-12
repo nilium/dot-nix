@@ -34,6 +34,7 @@ in {
       # Compilers
       pkgs.crystal
       pkgs.go_1_22
+      pkgs.gopls
       pkgs.rustup
     ];
 }

@@ -78,7 +78,7 @@ in {
         self'.tmux
         self'.pueue
         self'.pbcopy
-        self'.helix
+        self'.editors
         self'.nushell
         self'.fish
         self'.ssh

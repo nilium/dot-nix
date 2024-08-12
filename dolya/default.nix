@@ -45,7 +45,7 @@ in {
       self'.git-tools
 
       # Helix build and configuration
-      self'.helix
+      self'.editors
 
       # tmux configuration
       self'.tmux

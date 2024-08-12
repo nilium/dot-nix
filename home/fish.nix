@@ -1,4 +1,6 @@
 {pkgs, ...}: {
+  imports = [../fish/default.nix];
+
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;
@@ -17,6 +19,7 @@
       fish_add_path -p --move "$HOME/.cargo/bin"
       fish_add_path -p --move "$HOME/bin"
 
+      set -g -x COLORTERM truecolor
       set -g -x EDITOR hx
     '';
   };
