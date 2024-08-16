@@ -34,7 +34,7 @@
     };
 
     helix = {
-      url = "github:nilium/helix/nil-24.03";
+      url = "github:nilium/helix/nil-24.07";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.crane.follows = "crane";
     };
