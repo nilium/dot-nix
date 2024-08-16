@@ -33,7 +33,10 @@
         {
           name = "WinSetOption";
           option = "filetype=(clojure|lisp|scheme|racket|fennel)";
-          commands = ''parinfer-enable-window -smart'';
+          commands = ''
+            require-module parinfer
+            parinfer-enable-window -smart
+          '';
         }
         # kakoune-lsp
         {
@@ -213,15 +216,34 @@
       };
 
       plugins = with pkgs.kakounePlugins; [
-        kakoune-lsp
-        parinfer-rust
+        parinfer-rust # Module: parinfer
         auto-pairs-kak
         smarttab-kak
+        # smarttab
+        # powerline_expandtab
         fzf-kak
+        # fzf
+        # fzf-bzr
+        # fzf-git
+        # fzf-hg
+        # fzf-svn
+        # fzf-buffer
+        # fzf-cd
+        # fzf-ctags
+        # fzf-file
+        # fzf-grep
+        # fzf-project
+        # fzf-search
+        # fzf-vcs
+        # fzf-sk-grep
         kakoune-state-save
+        byline-kak # Module: byline
       ];
 
       extraConfig = ''
+        require-module smarttab
+        require-module byline
+
         # Add an extra tmux command to open a popup. Because...
         define-command -params 1.. -shell-completion -docstring 'open a tmux popup' tmux-terminal-popup %{
             tmux-terminal-impl 'display-popup -E' %arg{@}
