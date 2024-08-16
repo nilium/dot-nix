@@ -64,7 +64,10 @@
         {
           name = "WinSetOption";
           option = "filetype=go";
-          commands = "smarttab";
+          commands = ''
+            require-module smarttab
+            smarttab
+          '';
         }
         {
           name = "WinSetOption";
@@ -140,6 +143,16 @@
         [
           (normal "<c-semicolon>" "<a-semicolon>" "swap caret locations")
 
+          (normal "}" "}p;" "move cursor forward one paragraph")
+          (normal "]" "}p" "extend selection forward one paragraph")
+          (normal "{" "{p;" "move cursor back one paragraph")
+          (normal "[" "{p" "extend selection back one paragraph")
+
+          (goto "}" "<esc>}" "extend selection")
+          (goto "]" "<esc>]" "extend selection")
+          (goto "[" "<esc>[" "extend selection")
+          (goto "{" "<esc>{" "extend selection")
+
           (goto "n" "<esc>:buffer-next<ret>" "go to next buffer")
           (goto "p" "<esc>:buffer-previous<ret>" "go to next buffer")
           (goto "q" "<esc>:delete-buffer<ret>" "delete buffer")
@@ -155,6 +168,9 @@
           (match "M" "M" "extend to next enclosed")
           (match "n" "n" "select prior enclosed")
           (match "N" "N" "extend to prior enclosed")
+          (match "s" ":surround<ret>" "add surround")
+          (match "r" ":delete-surround<ret>" "replace surround")
+          (match "d" ":change-surround<ret>" "delete surround")
           (enter-mode "match" "i" "match-inner")
           (enter-mode "match" "a" "match-around")
 
@@ -216,6 +232,7 @@
       };
 
       plugins = with pkgs.kakounePlugins; [
+        (pkgs.callPackage ./kakoune-surround.nix {})
         parinfer-rust # Module: parinfer
         auto-pairs-kak
         smarttab-kak
@@ -241,7 +258,6 @@
       ];
 
       extraConfig = ''
-        require-module smarttab
         require-module byline
 
         # Add an extra tmux command to open a popup. Because...
