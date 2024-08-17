@@ -1,0 +1,34 @@
+commit ca4522ca4709ff1141dc6a47b03b537ef5c9c155
+Author: Noel Cower <ncower@nil.dev>
+Date:   Tue May 2 07:42:37 2023 -0700
+
+    refactor: render rulers before the cursor
+    
+    Render rulers before the cursor to ensure that the cursor, when over
+    a ruler, is not hidden from view. Without this, you typically end up
+    with 1) foreground text that is the same as the background if the
+    ruler doesn't already have a foreground and 2) no visible cursor,
+    because the ruler's background color took precedence. By moving the
+    rulers before the cursor, this ensures that the theme is still rendered
+    more or less the way one would visually expect things to turn out.
+
+diff --git a/helix-term/src/ui/editor.rs b/helix-term/src/ui/editor.rs
+index 31195a4e..c28af7b9 100644
+--- a/helix-term/src/ui/editor.rs
++++ b/helix-term/src/ui/editor.rs
+@@ -179,6 +179,7 @@ pub fn render_view(
+             );
+         }
+ 
++        Self::render_rulers(editor, doc, view, inner, surface, theme);
+         if is_focused {
+             let cursor = doc
+                 .selection(view.id)
+@@ -202,7 +203,6 @@ pub fn render_view(
+             &mut line_decorations,
+             &mut translated_positions,
+         );
+-        Self::render_rulers(editor, doc, view, inner, surface, theme);
+ 
+         // if we're not at the edge of the screen, draw a right border
+         if viewport.right() != view.area.right() {
