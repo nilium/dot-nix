@@ -1,6 +1,7 @@
 {...}: {
   homeManagerModules.kakoune = {pkgs, ...}: {
     xdg.configFile."kak/colors/triplejelly.kak".text = builtins.readFile ./triplejelly.kak;
+    xdg.configFile."kak-lsp/kak-lsp.toml".source = pkgs.callPackage ./kak-lsp-config.nix {};
 
     programs.kakoune = {
       enable = true;
@@ -47,10 +48,6 @@
             lsp-enable-window
             lsp-inlay-hints-enable window
             hook window BufWritePre .* %{ try lsp-formatting-sync }
-            map window normal <C-k> ': lsp-code-actions<ret>'
-            map window normal <C-K> ': lsp-code-lens<ret>'
-            map window user k ': lsp-hover<ret>'
-            map window user K ': lsp-hover-buffer<ret>'
           '';
         }
         {
@@ -185,7 +182,7 @@
           (user "y" "<a-|>pbcopy<ret>" "copy selection to clipboard")
           (user "p" "<a-!>pbpaste<ret>" "append clipboard after selection")
           (user "P" "!pbpaste<ret>" "insert clipboard before selection")
-          (user "r" "|pbpaste<ret>" "replace selection with clipboard")
+          (user "R" "|pbpaste<ret>" "replace selection with clipboard")
 
           # Make n and N non-selection and v-n and v-N add selections
           (normal "N" "<a-n>" "previous match")
@@ -208,8 +205,11 @@
           (user "|" ":vsplit<ret>" "split vertically")
 
           # kakoune-lsp
-          (normal "<c-k>" ": lsp-hover<ret>" "show hover information for cursor")
-          (user "k" ": lsp-hover<ret>" "show hover information for cursor")
+          (normal "<c-k>" ":lsp-hover<ret>" "show hover information for cursor")
+          (normal "<c-K>" ":lsp-code-actions<ret>" "perform code actions")
+          (user "k" ":lsp-hover<ret>" "show hover information for cursor")
+          (user "a" ":lsp-code-actions<ret>" "perform code actions")
+          (user "r" ":lsp-rename-prompt<ret>" "rename object")
 
           # fzf
           (user "t" ": fzf-mode<ret>f" "open a file with fzf")
@@ -232,6 +232,7 @@
       };
 
       plugins = with pkgs.kakounePlugins; [
+        (pkgs.callPackage ./kak-session-name.nix {})
         (pkgs.callPackage ./kakoune-surround.nix {})
         parinfer-rust # Module: parinfer
         auto-pairs-kak
@@ -255,9 +256,11 @@
         # fzf-sk-grep
         kakoune-state-save
         byline-kak # Module: byline
+        kakoune-lsp
       ];
 
       extraConfig = ''
+        eval %sh{kak-lsp --kakoune -s $kak_session}
         require-module byline
 
         # Add an extra tmux command to open a popup. Because...
