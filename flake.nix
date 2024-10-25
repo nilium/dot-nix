@@ -38,6 +38,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.crane.follows = "crane";
     };
+
+    jujutsu = {
+      url = "github:martinvonz/jj";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {ntk, ...}: (

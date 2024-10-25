@@ -2,6 +2,7 @@
   self,
   nixpkgs,
   home-manager,
+  jujutsu,
   ...
 }: let
   system = "aarch64-darwin";
@@ -33,6 +34,15 @@ in {
       # Miscellaneous packages
       self'.packages-common
       self'.packages-local
+
+      # Testing jj.
+      ({pkgs, ...}: let
+        jj = jujutsu.packages.${pkgs.system}.jujutsu;
+      in {
+        home.packages = [
+          jj
+        ];
+      })
 
       # Shells
       self'.fish
