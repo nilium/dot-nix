@@ -46,6 +46,23 @@ in {
 
       # Shells
       self'.fish
+      {
+        programs.rbenv = {
+          enable = true;
+          enableFishIntegration = true;
+          plugins = [
+            {
+              name = "ruby-build";
+              src = pkgs.fetchFromGitHub {
+                owner = "rbenv";
+                repo = "ruby-build";
+                rev = "v20240727";
+                hash = "sha256-OjTVSmJbf6ngRLS66+wLT8WscVwfYBxpXUP9X/RLbXs=";
+              };
+            }
+          ];
+        };
+      }
       self'.nushell
 
       # Git scripts
