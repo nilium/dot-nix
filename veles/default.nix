@@ -77,9 +77,11 @@ in {
       self'.fish
 
       # Git scripts
-      (self'.git {
-        signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOzRhuWCCAdX/4cYxS44BoILW0Frwpkf8R32yoMg068f";
-      })
+      (options @ {pkgs, ...}:
+        self'.git (options
+          // {
+            signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOzRhuWCCAdX/4cYxS44BoILW0Frwpkf8R32yoMg068f";
+          }))
       self'.git-tools
 
       # Helix build and configuration

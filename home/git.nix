@@ -1,9 +1,74 @@
-options @ {signingKey, ...}: {
+{
+  signingKey,
+  email ? "ncower@nil.dev",
+  ...
+}: {
+  programs.jujutsu = {
+    enable = true;
+    settings = {
+      user = {
+        name = "Noel";
+        inherit email;
+      };
+      signing = {
+        sign-all = true;
+        backend = "ssh";
+        key = signingKey;
+        backends.ssh.allowed-signers = "~/.ssh/authorized_signers";
+      };
+
+      git.auto-local-bookmark = true;
+      ui.default-command = "log";
+    };
+  };
+
   programs.git = {
     enable = true;
-    userEmail = options.email or "ncower@nil.dev";
+    userEmail = email;
     userName = "Noel";
     difftastic.enable = true;
+
+    ignores = [
+      # Swap.
+      "*~"
+      ".sw[a-z]"
+      ".*.sw[a-z]"
+      # MacOS.
+      ".DS_Store"
+      # Archives.
+      "*.zip"
+      "*.tar.*"
+      "*.tgz"
+      "*.txz"
+      "*.tzst"
+      "*.a"
+      # Packages.
+      "*.deb"
+      "*.rpm"
+      "*.xbps"
+      "*.pkg"
+      # Misc Windows.
+      "*.exe"
+      "*.dll"
+      # Disk images.
+      "*.qcow"
+      "*.qcow2"
+      "*.qcow3"
+      "*.dmg"
+      # Temp files.
+      "*.tmp"
+      "*.tmp[.-]*"
+      "*.temp"
+      "*.temp[.-]*"
+      "*.scratch"
+      "*.scratch[.-]*"
+      "*.bak"
+      "*.bak[.-]*"
+      "*.old"
+      "*.old[.-]*"
+      # jj
+      ".jj"
+    ];
 
     extraConfig = {
       core = {

@@ -71,9 +71,11 @@ in {
         self'.fmt
         self'.git-tools
         self'.kitty
-        (self'.git {
-          signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGJMs/x7sWSkjVY5tNBHlLOF6puCPljTWbbyUTL6rpnF";
-        })
+        (options @ {pkgs, ...}:
+          self'.git (options
+            // {
+              signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGJMs/x7sWSkjVY5tNBHlLOF6puCPljTWbbyUTL6rpnF";
+            }))
         self'.scr
         self'.tmux
         self'.pueue

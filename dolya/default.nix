@@ -2,7 +2,6 @@
   self,
   nixpkgs,
   home-manager,
-  jujutsu,
   ...
 }: let
   system = "aarch64-darwin";
@@ -35,15 +34,6 @@ in {
       self'.packages-common
       self'.packages-local
 
-      # Testing jj.
-      ({pkgs, ...}: let
-        jj = jujutsu.packages.${pkgs.system}.jujutsu;
-      in {
-        home.packages = [
-          jj
-        ];
-      })
-
       # Shells
       self'.fish
       {
@@ -66,9 +56,11 @@ in {
       self'.nushell
 
       # Git scripts
-      (self'.git {
-        signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmtTpCpIeFSE+nz8+mOD4+C3rpQtYCGCEIEBRRh9h+D";
-      })
+      (options @ {pkgs, ...}:
+        self'.git (options
+          // {
+            signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmtTpCpIeFSE+nz8+mOD4+C3rpQtYCGCEIEBRRh9h+D";
+          }))
       self'.git-tools
 
       # Helix build and configuration
