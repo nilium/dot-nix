@@ -36,5 +36,6 @@ in {
       pkgs.go_1_22
       pkgs.gopls
       pkgs.rustup
+      pkgs.uiua
     ];
 }
