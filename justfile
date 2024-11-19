@@ -35,7 +35,7 @@ activate home-or-host *args:
 	@just activate-{{home-or-host}} {{args}}
 
 # Switch to the current configuration.
-activate-home user=default-user host=default-host: (build-home user host)
+activate-home user=default-user host=default-host:
 	{{home-manager}} --flake {{quote(_sel + user + '@' + host)}} switch --impure
 
 # Schedule the current configuration for boot.
