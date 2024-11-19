@@ -15,7 +15,7 @@
   };
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.kernelPackages = pkgs.linuxPackages_6_9;
+  boot.kernelPackages = pkgs.linuxPackages_6_11;
 
   nix.gc = {
     automatic = true;
@@ -173,14 +173,16 @@
   };
 
   # Enable sound.
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  # NOTE: sound.enable removed, pipewire enabled by default.
+  # sound.enable = true;
+  # hardware.pulseaudio.enable = true;
   security.rtkit.enable = true;
 
   # OpenGL.
-  hardware.opengl.enable = true;
-  hardware.opengl.extraPackages = [
-    pkgs.mesa_drivers
+  hardware.graphics.enable = true;
+  hardware.graphics.extraPackages = [
+    pkgs.mesa
+    pkgs.mesa.drivers
     pkgs.vaapiIntel
     pkgs.vaapiVdpau
     pkgs.libvdpau-va-gl

@@ -2,7 +2,7 @@
   programs.kitty = {
     enable = true;
 
-    theme = "duckbones";
+    themeFile = "duckbones";
     font = {
       name = "Pragmata Pro Mono Liga";
       size = 10;
