@@ -18,6 +18,7 @@ lib'.mkFlake' {
           pkgs'.nil
           pkgs'.git
           pkgs'.helix
+          pkgs'.ripgrep
           self'.packages.afmt
         ]
         ++ self.lib.generators.cmtPackages {pkgs = pkgs';};
