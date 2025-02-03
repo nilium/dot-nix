@@ -1,7 +1,6 @@
 {...}: {
   homeManagerModules.kakoune = {pkgs, ...}: {
     xdg.configFile."kak/colors/triplejelly.kak".text = builtins.readFile ./triplejelly.kak;
-    # xdg.configFile."kak-lsp/kak-lsp.toml".source = pkgs.callPackage ./kak-lsp-config.nix {};
 
     programs.kakoune = {
       enable = true;
