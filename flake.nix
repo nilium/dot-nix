@@ -51,6 +51,7 @@
       ./sirin # sirin, x86_64-linux
       ./dolya # dolya, aarch64-darwin
       ./veles # veles, x86_64-linux
+      ./zosim
 
       # Common outputs
       ./dot-shell.nix # devShells
