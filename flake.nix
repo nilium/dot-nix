@@ -34,7 +34,7 @@
     };
 
     helix = {
-      url = "github:helix-editor/helix/24.07";
+      url = "github:helix-editor/helix/25.01.1";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.crane.follows = "crane";
     };

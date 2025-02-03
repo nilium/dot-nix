@@ -15,7 +15,6 @@
             (prev.patches or [])
             ++ [
               ./ruler-order.patch #
-              ./pipe-trim.patch # Remove after 24.07 (https://github.com/helix-editor/helix/commit/535351067c2ac018ee2fef6cc685f49065617bd1)
             ];
         });
       in
