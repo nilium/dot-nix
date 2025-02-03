@@ -9,6 +9,7 @@ keybinds clear-defaults=true {
 
         bind "|" { NewPane "right"; SwitchToMode "locked"; }
         bind "\"" { NewPane "down"; SwitchToMode "locked"; }
+        bind "c" { NewPane; SwitchToMode "locked"; }
 
         bind "Ctrl space" { PreviousSwapLayout; }
         bind "space" { NextSwapLayout; }
