@@ -36,6 +36,7 @@ lib'.merge' [
       scr = import ./scr.nix;
       ssh = import ./ssh.nix;
       tmux = import ./tmux.nix;
+      zellij = import ./zellij;
     };
   }
 ]

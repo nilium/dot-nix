@@ -66,8 +66,9 @@ in {
       # Helix build and configuration
       self'.editors
 
-      # tmux configuration
+      # tmux / zellij configuration
       self'.tmux
+      self'.zellij
     ];
   };
 }

@@ -1,6 +1,8 @@
 {pkgs, ...}: {
   nix = {
-    package = pkgs.nixVersions.nix_2_20;
+    # File is a misnomer now, but don't need any unstable features right now besides flakes because
+    # they'll never be stable and might eventually get removed.
+    package = pkgs.nixVersions.stable;
     settings.experimental-features = ["nix-command" "flakes"];
   };
 }
