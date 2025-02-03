@@ -12,6 +12,7 @@ in {
   programs.tmux = {
     enable = true;
 
+    sensibleOnTop = false;
     terminal = "xterm-256color";
     aggressiveResize = true;
     baseIndex = 1;
@@ -21,6 +22,7 @@ in {
     keyMode = "vi";
     shortcut = "s";
     secureSocket = true;
+    shell = "${pkgs.fish}/bin/fish";
 
     extraConfig = ''
       set-option -g terminal-overrides ',xterm-256color:Tc,screen-256color:Tc'
