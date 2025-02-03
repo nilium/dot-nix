@@ -66,6 +66,9 @@
       "*.bak[.-]*"
       "*.old"
       "*.old[.-]*"
+      "_temp/"
+      "_scratch/"
+      "_misc/"
       # jj
       ".jj"
     ];
