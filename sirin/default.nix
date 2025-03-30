@@ -72,11 +72,10 @@ in {
         self'.fmt
         self'.git-tools
         self'.kitty
-        (options @ {pkgs, ...}:
-          self'.git (options
-            // {
-              signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGJMs/x7sWSkjVY5tNBHlLOF6puCPljTWbbyUTL6rpnF";
-            }))
+        {
+          dotnix.git.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGJMs/x7sWSkjVY5tNBHlLOF6puCPljTWbbyUTL6rpnF";
+        }
+        self'.git
         self'.scr
         self'.tmux
         self'.pueue

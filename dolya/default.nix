@@ -56,11 +56,10 @@ in {
       self'.nushell
 
       # Git scripts
-      (options @ {pkgs, ...}:
-        self'.git (options
-          // {
-            signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmtTpCpIeFSE+nz8+mOD4+C3rpQtYCGCEIEBRRh9h+D";
-          }))
+      {
+        dotnix.git.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPmtTpCpIeFSE+nz8+mOD4+C3rpQtYCGCEIEBRRh9h+D";
+      }
+      self'.git
       self'.git-tools
 
       # Helix build and configuration
