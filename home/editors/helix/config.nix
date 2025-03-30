@@ -45,8 +45,8 @@ _: let
         A-n = "decrement";
 
         # Paste via clipboard as the default.
-        y = ["yank" "yank_joined_to_clipboard"];
-        Y = ["yank" "yank_main_selection_to_clipboard"];
+        y = "yank";
+        Y = "yank_joined";
 
         # Add join selections back somewhere.
         C-j = "join_selections";
@@ -79,6 +79,8 @@ _: let
           q = ":buffer-close";
           h = ":toggle-option lsp.display-inlay-hints";
           c = ":toggle-option search.smart-case";
+          y = "yank_main_selection_to_clipboard";
+          Y = "yank_joined_to_clipboard";
         };
 
         g = {
