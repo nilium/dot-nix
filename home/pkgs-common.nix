@@ -18,6 +18,7 @@ in {
       pkgs.gnumake
       pkgs.gnused
       pkgs.gnutar
+      pkgs.graphviz
       pkgs.gron
       pkgs.jq
       pkgs.just
@@ -33,7 +34,7 @@ in {
 
       # Compilers
       pkgs.crystal
-      pkgs.go_1_22
+      pkgs.go
       pkgs.gopls
       pkgs.rustup
       pkgs.uiua
