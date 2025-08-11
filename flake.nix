@@ -25,12 +25,10 @@
 
     fex = {
       url = "sourcehut:~nilium/go-fex";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     sql = {
       url = "sourcehut:~nilium/sql";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     helix = {
