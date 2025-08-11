@@ -33,6 +33,13 @@ in {
       # Miscellaneous packages
       self'.packages-common
       self'.packages-local
+      ({pkgs, ...}: {
+        home.packages = [
+          pkgs.kubectl
+          pkgs.doctl
+          pkgs.colima
+        ];
+      })
 
       # Shells
       self'.fish
