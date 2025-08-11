@@ -8,17 +8,7 @@
     programs.helix = {
       enable = true;
       defaultEditor = true;
-      package = let
-        helix-pkgs = helix.packages.${pkgs.system};
-        helix-patched = helix-pkgs.helix-unwrapped.overrideAttrs (prev: {
-          patches =
-            (prev.patches or [])
-            ++ [
-              ./ruler-order.patch #
-            ];
-        });
-      in
-        helix-pkgs.helix.passthru.wrapper helix-patched;
+      package = helix.packages.${pkgs.system}.default;
 
       themes = {
         big-duo = import ./big-duo.nix;

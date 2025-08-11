@@ -5,8 +5,10 @@
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
     nix-hardware.url = "github:nixos/nixos-hardware";
 
-    nixgl.url = "github:nix-community/nixGL?ref=main";
-    nixgl.inputs.nixpkgs.follows = "nixpkgs";
+    nixgl = {
+      url = "github:nix-community/nixGL?ref=main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     ntk = {
       url = "github:nilium/dot-nix/lib";
@@ -23,19 +25,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    fex = {
-      url = "sourcehut:~nilium/go-fex";
-    };
-
-    sql = {
-      url = "sourcehut:~nilium/sql";
-    };
-
-    helix = {
-      url = "github:helix-editor/helix/25.01.1";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.crane.follows = "crane";
-    };
+    fex.url = "sourcehut:~nilium/go-fex";
+    sql.url = "sourcehut:~nilium/sql";
+    helix.url = "github:helix-editor/helix/25.07.1";
   };
 
   outputs = inputs @ {ntk, ...}: (
