@@ -13,7 +13,7 @@ rustPlatform.buildRustPackage {
     hash = "sha256-GMnJJ3D1YTTshk/E4T5t2oMmiIIefHCQRnNNRjC22AQ=";
   };
 
-  cargoHash = "sha256-b2Hv2ypuhvr07zD5jxnbQh2tZG9NBs93G41XJ1lOy4A=";
+  cargoHash = "sha256-SeoHmcyc+5lQelP11+AP8RriCJEt7UFgC4DBv4adFi4=";
 
   postInstall = ''
     mkdir -p "$out/share/kak/autoload/plugins/kak-session-name"
