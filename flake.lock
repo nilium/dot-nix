@@ -232,27 +232,6 @@
         "type": "github"
       }
     },
-    "ntk": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1711501543,
-        "narHash": "sha256-irgQouGNMlXYUEDHy8P64Fn5bkGE0yjGAs2G341KUBM=",
-        "owner": "nilium",
-        "repo": "dot-nix",
-        "rev": "8414d9aa700d64afd03b10e083f9f21f112d60f2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nilium",
-        "ref": "lib",
-        "repo": "dot-nix",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "crane": "crane",
@@ -262,7 +241,6 @@
         "nix-hardware": "nix-hardware",
         "nixgl": "nixgl",
         "nixpkgs": "nixpkgs_3",
-        "ntk": "ntk",
         "sql": "sql"
       }
     },

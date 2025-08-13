@@ -10,11 +10,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    ntk = {
-      url = "github:nilium/dot-nix/lib";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     crane = {
       url = "github:ipetkov/crane";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,8 +25,18 @@
     helix.url = "github:helix-editor/helix/25.07.1";
   };
 
-  outputs = inputs @ {ntk, ...}: (
-    ntk.lib.merge inputs [
+  outputs = inputs @ {nixpkgs, ...}: let
+    ntk' = ./lib;
+    ntk = import ntk' {
+      inherit nixpkgs;
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
+    };
+  in (
+    ntk.merge inputs [
       # Modules
       ./packages # Shared packages
       ./nixos # Most NixOS modules
@@ -46,6 +51,10 @@
       # Common outputs
       ./dot-shell.nix # devShells
       ./formatter.nix # Formatter
+
+      {
+        outputs.lib = ntk;
+      }
     ]
   );
 }

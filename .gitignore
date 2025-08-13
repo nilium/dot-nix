@@ -3,4 +3,3 @@ target
 *.qcow
 *.qcow[0-9]
 /keys
-/lib
