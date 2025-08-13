@@ -1,5 +1,5 @@
-default-host := `hostname -s`
-default-user := `id -nu`
+default-host := `hostname -s || echo -n nowhere`
+default-user := `id -nu || echo -n nobody`
 
 _sel := '.#'
 
@@ -10,6 +10,12 @@ export NIX_CONFIG := 'experimental-features = nix-command flakes'
 # could mislead later.
 home-manager := 'nix run --inputs-from . home-manager -- '
 
+check:
+	nix flake show --no-update-lock-file --all-systems
+
+[positional-arguments]
+fmt *args:
+	alejandra {{ args }} .
 
 # Build the current home configuration.
 default: build-home

@@ -1,0 +1,24 @@
+when:
+  - event: [push, pull_request]
+    branch: [main]
+
+dependencies:
+  nixpkgs:
+    - nix
+    - alejandra
+    - strip-ansi
+
+steps:
+  - name: Check formatting
+    command: alejandra --check .
+
+  - name: Check outputs
+    command: nix flake show --no-update-lock-file --all-systems 2> >(strip-ansi >&2) | strip-ansi
+    environment:
+      NO_COLOR: 'true'
+      NIX_BUILD_CORES: '1'
+      NIX_CONFIG: |
+        experimental-features = nix-command flakes
+        cores = 1
+        max-jobs = 1
+
